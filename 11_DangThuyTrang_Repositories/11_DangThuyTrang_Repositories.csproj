@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>_11_DangThuyTrang_Repositories</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\11_DangThuyTrang_BussinessObjects\11_DangThuyTrang_BussinessObjects.csproj" />
+    <ProjectReference Include="..\11_DangThuyTrang_DataAccess\11_DangThuyTrang_DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
