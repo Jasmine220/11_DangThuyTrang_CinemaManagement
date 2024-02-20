@@ -13,8 +13,16 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
         [HttpPost]
         public IActionResult SignUp(string username, string password, string phone, string email, string address)
         {
+            // Tạo người dùng với Id từ tài khoản mới tạo
+            var user = _authRepository.CreateUser(phone, email, address);
+
+            // Kiểm tra việc tạo người dùng có thành công không
+            if (user == null)
+            {
+                return BadRequest("Không thể tạo người dùng");
+            }
             // Tạo tài khoản và nhận Id trả về
-            var account = _authRepository.CreateAccount(username, password);
+            var account = _authRepository.CreateAccount(user, username, password);
 
             // Kiểm tra xem tài khoản có được tạo thành công không
             if (account == null)
@@ -22,14 +30,7 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
                 return BadRequest("Không thể tạo tài khoản");
             }
 
-            // Tạo người dùng với Id từ tài khoản mới tạo
-            var user = _authRepository.CreateUser(account.Id, phone, email, address);
-
-            // Kiểm tra việc tạo người dùng có thành công không
-            if (user == null)
-            {
-                return BadRequest("Không thể tạo người dùng");
-            }
+   
 
             return Ok("Đăng ký thành công");
         }

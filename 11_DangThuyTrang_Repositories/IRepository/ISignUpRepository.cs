@@ -9,7 +9,7 @@ namespace _11_DangThuyTrang_Repositories.IRepository
 {
     public interface ISignUpRepository
     {
-        public Account CreateAccount(string username, string password);
-        public User CreateUser(int accountId, string phone, string email, string address);
+        public Account CreateAccount(User uses, string username, string password);
+        public User CreateUser(string phone, string email, string address);
     }
 }

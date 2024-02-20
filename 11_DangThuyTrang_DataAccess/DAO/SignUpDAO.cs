@@ -7,7 +7,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 {
     public class SignUpDAO
     {
-        public static Account CreateAccount(string username, string password)
+        public static Account CreateAccount(User user, string username, string password)
         {
             using (var context = new _11_DangThuyTrang_CinemaManagementContext())
             {
@@ -20,6 +20,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 
                 var newAccount = new Account
                 {
+                    Id = user.Id,
                     Username = username,
                     Password = password
                 };
@@ -31,7 +32,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             }
         }
 
-        public static User CreateUser(int accountId, string phone, string email, string address)
+        public static User CreateUser(string phone, string email, string address)
         {
             try
             {
@@ -39,7 +40,6 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                 {
                     var newUser = new User
                     {
-                        Id = accountId,
                         Phone = phone,
                         Email = email,
                         Address = address,
@@ -47,11 +47,12 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                     };
 
                     context.Users.Add(newUser);
+                    context.SaveChanges() ;
 
                     // Gán vai trò Customer cho User
                     var userRole = new UserRole
                     {
-                        UserId = accountId,
+                        UserId = newUser.Id, // Sử dụng Id của Account đã được truyền vào
                         RoleId = 2 // ID của Customer
                     };
                     context.UserRoles.Add(userRole);
@@ -66,5 +67,6 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                 throw new ApplicationException("Error creating user.", ex);
             }
         }
+
     }
 }

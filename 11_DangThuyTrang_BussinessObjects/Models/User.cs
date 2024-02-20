@@ -8,15 +8,17 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public User()
         {
             Tickets = new HashSet<Ticket>();
+            UserRoles = new HashSet<UserRole>();
         }
 
         public int Id { get; set; }
-        public string? Phone { get; set; }
-        public string? Email { get; set; }
-        public string? Address { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
         public bool? Status { get; set; }
 
-        public virtual Account? Account { get; set; }
+        public virtual Account Account { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }
