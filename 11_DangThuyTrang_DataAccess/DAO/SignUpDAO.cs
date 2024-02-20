@@ -37,20 +37,25 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             {
                 using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
-                    // Lấy vai trò mặc định từ cơ sở dữ liệu (ví dụ: Customer có ID = 2)
-                    int defaultRoleId = 1;
-                    var defaultRole = GetRoleById(defaultRoleId);
-
                     var newUser = new User
                     {
-                        Id = accountId, // Sử dụng id của tài khoản vừa được tạo
+                        Id = accountId,
                         Phone = phone,
                         Email = email,
                         Address = address,
-                        //RoleId = defaultRoleId
+                        Status = true
                     };
 
                     context.Users.Add(newUser);
+
+                    // Gán vai trò Customer cho User
+                    var userRole = new UserRole
+                    {
+                        UserId = accountId,
+                        RoleId = 2 // ID của Customer
+                    };
+                    context.UserRoles.Add(userRole);
+
                     context.SaveChanges();
 
                     return newUser;
@@ -59,19 +64,6 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             catch (Exception ex)
             {
                 throw new ApplicationException("Error creating user.", ex);
-            }
-        }
-
-        public static Role GetRoleById(int roleId)
-        {
-            using (var context = new _11_DangThuyTrang_CinemaManagementContext())
-            {
-                var role = context.Roles.Find(roleId);
-                if (role == null)
-                {
-                    throw new ApplicationException($"Không tìm thấy vai trò với ID {roleId}.");
-                }
-                return role;
             }
         }
     }

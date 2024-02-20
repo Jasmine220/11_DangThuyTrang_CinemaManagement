@@ -10,6 +10,5 @@ namespace _11_DangThuyTrang_Repositories.Repository
 
         public User CreateUser(int accountId, string phone, string email, string address) => SignUpDAO.CreateUser(accountId, phone, email, address);
 
-        public Role GetRoleById(int roleId) => SignUpDAO.GetRoleById(roleId);
     }
 }
