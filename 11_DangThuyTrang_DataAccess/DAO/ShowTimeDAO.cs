@@ -42,7 +42,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 					showTime = context.ShowTimes
 					.Include(st => st.Movie)
 					.Include(st => st.Showroom)
-					.FirstOrDefault(s => s.Id == id);
+					.SingleOrDefault(s => s.Id == id);
 				}
 
 			}
