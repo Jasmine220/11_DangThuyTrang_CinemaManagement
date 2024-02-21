@@ -11,9 +11,9 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         }
 
         public int Id { get; set; }
-        public string StartTime { get; set; }
-        public int ShowroomId { get; set; }
-        public int MovieId { get; set; }
+        public string? StartTime { get; set; }
+        public int? ShowroomId { get; set; }
+        public int? MovieId { get; set; }
         public DateTime? Date { get; set; }
 
         public virtual Movie Movie { get; set; }

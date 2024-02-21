@@ -130,6 +130,8 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
                 entity.Property(e => e.Length).HasColumnName("length");
 
+                entity.Property(e => e.PriceTicket).HasColumnName("price_ticket");
+
                 entity.Property(e => e.PurchaseTime)
                     .HasColumnType("datetime")
                     .HasColumnName("purchase_time");
@@ -253,9 +255,9 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
             modelBuilder.Entity<ShowRoomSeat>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("ShowRoomSeat");
+
+                entity.Property(e => e.ShowroomseatId).HasColumnName("showroomseat_id");
 
                 entity.Property(e => e.SeatId).HasColumnName("seat_id");
 
@@ -268,12 +270,12 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
                     .HasColumnName("type");
 
                 entity.HasOne(d => d.Seat)
-                    .WithMany()
+                    .WithMany(p => p.ShowRoomSeats)
                     .HasForeignKey(d => d.SeatId)
                     .HasConstraintName("FK_ShowRoomSeat_Seat");
 
                 entity.HasOne(d => d.Showroom)
-                    .WithMany()
+                    .WithMany(p => p.ShowRoomSeats)
                     .HasForeignKey(d => d.ShowroomId)
                     .HasConstraintName("FK_ShowRoomSeat_ShowRoom");
             });
@@ -332,9 +334,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
             {
                 entity.ToTable("Ticket");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CreatedTime)
                     .HasColumnType("datetime")
@@ -346,6 +346,8 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
+                entity.Property(e => e.ShowroomseatId).HasColumnName("showroomseat_id");
+
                 entity.Property(e => e.ShowtimeId).HasColumnName("showtime_id");
 
                 entity.Property(e => e.TotalPrice).HasColumnName("total_price");
@@ -355,16 +357,15 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Ticket_User");
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Ticket)
-                    .HasForeignKey<Ticket>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Ticket_Seat");
-
                 entity.HasOne(d => d.PaymentMethod)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.PaymentMethodId)
                     .HasConstraintName("FK_Ticket_PaymentMethod");
+
+                entity.HasOne(d => d.Showroomseat)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.ShowroomseatId)
+                    .HasConstraintName("FK_Ticket_ShowRoomSeat");
 
                 entity.HasOne(d => d.Showtime)
                     .WithMany(p => p.Tickets)
@@ -395,21 +396,21 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
             modelBuilder.Entity<UserRole>(entity =>
             {
-                entity.ToTable("UserRole");
+                entity.HasNoKey();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.ToTable("UserRole");
 
                 entity.Property(e => e.RoleId).HasColumnName("role_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Role)
-                    .WithMany(p => p.UserRoles)
+                    .WithMany()
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK_UserRole_Role");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserRoles)
+                    .WithMany()
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_UserRole_User");
             });
