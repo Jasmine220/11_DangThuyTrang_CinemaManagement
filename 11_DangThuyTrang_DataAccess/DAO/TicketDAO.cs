@@ -21,7 +21,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                     .Include(st => st.PaymentMethod)
                     .Include(st => st.Customer)
                     .Include (st => st.Showroomseat)
-                    .Include(st => st.Showtime)
+                    .Include(st => st.Showtime).ThenInclude(st => st.Movie)
                     .SingleOrDefault(s => s.Id == id);
                 }
 
