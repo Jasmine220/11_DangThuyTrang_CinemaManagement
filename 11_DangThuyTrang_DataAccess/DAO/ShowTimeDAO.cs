@@ -18,21 +18,36 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                 using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
                     showTimes = context.ShowTimes
-                    .Include(st => st.Movie)
-                    .Include(st => st.Showroom)
-                    .Where(st => EF.Functions.DateDiffDay(st.Date, date) == 0)
-                    .ToList();
+                        .Include(st => st.Movie)
+                        .Include(st => st.Showroom)
+                        .Where(st => EF.Functions.DateDiffDay(st.Date, date) == 0)
+                        .ToList();
                 }
-           
+
+                // Gộp các bản ghi có cùng MovieId lại với nhau
+                var groupedShowTimes = showTimes.GroupBy(st => st.MovieId)
+                                                .Select(group => new ShowTime
+                                                {
+                                                    Id = group.First().Id,
+                                                    StartTime = string.Join(", ", group.Select(st => st.StartTime)),
+                                                    ShowroomId = group.First().ShowroomId,
+                                                    MovieId = group.Key,
+                                                    Date = group.First().Date,
+                                                    Movie = group.First().Movie,
+                                                    Showroom = group.First().Showroom,
+                                                    Tickets = group.SelectMany(st => st.Tickets).ToList()
+                                                })
+                                                .ToList();
+
+                return groupedShowTimes;
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Error getting show times by date.", ex);
             }
-            return showTimes;
         }
 
-		public static ShowTime GetShowTimeById(int id)
+        public static ShowTime GetShowTimeById(int id)
 		{
 			ShowTime? showTime = null;
 			try
@@ -42,7 +57,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 					showTime = context.ShowTimes
 					.Include(st => st.Movie)
 					.Include(st => st.Showroom)
-					.FirstOrDefault(s => s.Id == id);
+					.SingleOrDefault(s => s.Id == id);
 				}
 
 			}

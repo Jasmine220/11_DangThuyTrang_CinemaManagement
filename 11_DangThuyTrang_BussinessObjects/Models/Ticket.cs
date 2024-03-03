@@ -12,10 +12,11 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public int? Quantity { get; set; }
         public int? ShowtimeId { get; set; }
         public int? PaymentMethodId { get; set; }
+        public int? ShowroomseatId { get; set; }
 
-        public virtual User? Customer { get; set; }
-        public virtual Seat IdNavigation { get; set; } = null!;
-        public virtual PaymentMethod? PaymentMethod { get; set; }
-        public virtual ShowTime? Showtime { get; set; }
+        public virtual User Customer { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
+        public virtual ShowRoomSeat Showroomseat { get; set; }
+        public virtual ShowTime Showtime { get; set; }
     }
 }

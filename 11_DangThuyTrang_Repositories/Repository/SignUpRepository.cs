@@ -6,9 +6,9 @@ namespace _11_DangThuyTrang_Repositories.Repository
 {
     public class SignUpRepository : ISignUpRepository
     {
-        public Account CreateAccount(string username, string password) => SignUpDAO.CreateAccount(username, password);
+        public Account CreateAccount(User user, string username, string password) => SignUpDAO.CreateAccount(user, username, password);
 
-        public User CreateUser(int accountId, string phone, string email, string address) => SignUpDAO.CreateUser(accountId, phone, email, address);
+        public User CreateUser(string phone, string email, string address) => SignUpDAO.CreateUser(phone, email, address);
 
     }
 }

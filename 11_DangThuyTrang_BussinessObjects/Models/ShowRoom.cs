@@ -7,6 +7,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
     {
         public ShowRoom()
         {
+            ShowRoomSeats = new HashSet<ShowRoomSeat>();
             ShowTimes = new HashSet<ShowTime>();
         }
 
@@ -19,6 +20,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public int? TheaterId { get; set; }
 
         public virtual Theater? Theater { get; set; }
+        public virtual ICollection<ShowRoomSeat> ShowRoomSeats { get; set; }
         public virtual ICollection<ShowTime> ShowTimes { get; set; }
     }
 }

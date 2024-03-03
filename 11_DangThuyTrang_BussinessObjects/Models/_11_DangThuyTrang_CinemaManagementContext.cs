@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace _11_DangThuyTrang_BussinessObjects.Models
 {
@@ -16,30 +17,30 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         {
         }
 
-        public virtual DbSet<Account> Accounts { get; set; } = null!;
-        public virtual DbSet<Cast> Casts { get; set; } = null!;
-        public virtual DbSet<Feature> Features { get; set; } = null!;
-        public virtual DbSet<Genre> Genres { get; set; } = null!;
-        public virtual DbSet<Movie> Movies { get; set; } = null!;
-        public virtual DbSet<MovieCast> MovieCasts { get; set; } = null!;
-        public virtual DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
-        public virtual DbSet<RoleFeature> RoleFeatures { get; set; } = null!;
-        public virtual DbSet<Seat> Seats { get; set; } = null!;
-        public virtual DbSet<ShowRoom> ShowRooms { get; set; } = null!;
-        public virtual DbSet<ShowRoomSeat> ShowRoomSeats { get; set; } = null!;
-        public virtual DbSet<ShowTime> ShowTimes { get; set; } = null!;
-        public virtual DbSet<Theater> Theaters { get; set; } = null!;
-        public virtual DbSet<Ticket> Tickets { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
-        public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Cast> Casts { get; set; }
+        public virtual DbSet<Feature> Features { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<Movie> Movies { get; set; }
+        public virtual DbSet<MovieCast> MovieCasts { get; set; }
+        public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<RoleFeature> RoleFeatures { get; set; }
+        public virtual DbSet<Seat> Seats { get; set; }
+        public virtual DbSet<ShowRoom> ShowRooms { get; set; }
+        public virtual DbSet<ShowRoomSeat> ShowRoomSeats { get; set; }
+        public virtual DbSet<ShowTime> ShowTimes { get; set; }
+        public virtual DbSet<Theater> Theaters { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=DESKTOP-QN9RQ0F;database=11_DangThuyTrang_CinemaManagement;uid=sa;pwd=123456;TrustServerCertificate=true");
+                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+                optionsBuilder.UseSqlServer(config.GetConnectionString("MyDB"));
             }
         }
 
@@ -128,6 +129,8 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
                     .HasColumnName("language");
 
                 entity.Property(e => e.Length).HasColumnName("length");
+
+                entity.Property(e => e.PriceTicket).HasColumnName("price_ticket");
 
                 entity.Property(e => e.PurchaseTime)
                     .HasColumnType("datetime")
@@ -252,9 +255,9 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
             modelBuilder.Entity<ShowRoomSeat>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("ShowRoomSeat");
+
+                entity.Property(e => e.ShowroomseatId).HasColumnName("showroomseat_id");
 
                 entity.Property(e => e.SeatId).HasColumnName("seat_id");
 
@@ -267,12 +270,12 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
                     .HasColumnName("type");
 
                 entity.HasOne(d => d.Seat)
-                    .WithMany()
+                    .WithMany(p => p.ShowRoomSeats)
                     .HasForeignKey(d => d.SeatId)
                     .HasConstraintName("FK_ShowRoomSeat_Seat");
 
                 entity.HasOne(d => d.Showroom)
-                    .WithMany()
+                    .WithMany(p => p.ShowRoomSeats)
                     .HasForeignKey(d => d.ShowroomId)
                     .HasConstraintName("FK_ShowRoomSeat_ShowRoom");
             });
@@ -331,9 +334,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
             {
                 entity.ToTable("Ticket");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CreatedTime)
                     .HasColumnType("datetime")
@@ -345,6 +346,8 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
+                entity.Property(e => e.ShowroomseatId).HasColumnName("showroomseat_id");
+
                 entity.Property(e => e.ShowtimeId).HasColumnName("showtime_id");
 
                 entity.Property(e => e.TotalPrice).HasColumnName("total_price");
@@ -354,16 +357,15 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Ticket_User");
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Ticket)
-                    .HasForeignKey<Ticket>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Ticket_Seat");
-
                 entity.HasOne(d => d.PaymentMethod)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.PaymentMethodId)
                     .HasConstraintName("FK_Ticket_PaymentMethod");
+
+                entity.HasOne(d => d.Showroomseat)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.ShowroomseatId)
+                    .HasConstraintName("FK_Ticket_ShowRoomSeat");
 
                 entity.HasOne(d => d.Showtime)
                     .WithMany(p => p.Tickets)
@@ -375,9 +377,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
                     .HasMaxLength(150)
@@ -396,21 +396,21 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 
             modelBuilder.Entity<UserRole>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("UserRole");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.RoleId).HasColumnName("role_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Role)
-                    .WithMany()
+                    .WithMany(p => p.UserRoles)
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK_UserRole_Role");
 
                 entity.HasOne(d => d.User)
-                    .WithMany()
+                    .WithMany(p => p.UserRoles)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_UserRole_User");
             });

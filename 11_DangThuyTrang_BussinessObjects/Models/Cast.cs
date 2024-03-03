@@ -6,6 +6,6 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
     public partial class Cast
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
     }
 }

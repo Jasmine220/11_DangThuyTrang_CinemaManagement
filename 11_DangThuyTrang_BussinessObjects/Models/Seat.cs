@@ -5,9 +5,14 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 {
     public partial class Seat
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
+        public Seat()
+        {
+            ShowRoomSeats = new HashSet<ShowRoomSeat>();
+        }
 
-        public virtual Ticket? Ticket { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public virtual ICollection<ShowRoomSeat> ShowRoomSeats { get; set; }
     }
 }

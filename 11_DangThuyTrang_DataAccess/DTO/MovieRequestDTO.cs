@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace _11_DangThuyTrang_BussinessObjects.Models
+namespace _11_DangThuyTrang_DataAccess.DTO
 {
-    public partial class Movie
+    public class MovieRequestDTO
     {
-        public Movie()
-        {
-            ShowTimes = new HashSet<ShowTime>();
-        }
-
-        public int Id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string? Director { get; set; }
@@ -21,8 +18,5 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public string? Image { get; set; }
         public int? GenreId { get; set; }
         public double? PriceTicket { get; set; }
-
-        public virtual Genre? Genre { get; set; }
-        public virtual ICollection<ShowTime> ShowTimes { get; set; }
     }
 }

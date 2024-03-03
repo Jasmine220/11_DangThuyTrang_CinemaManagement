@@ -11,9 +11,9 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         }
 
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Hotline { get; set; }
-        public string? Address { get; set; }
+        public string Name { get; set; }
+        public string Hotline { get; set; }
+        public string Address { get; set; }
 
         public virtual ICollection<ShowRoom> ShowRooms { get; set; }
     }
