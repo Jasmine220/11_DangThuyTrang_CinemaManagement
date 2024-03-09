@@ -1,0 +1,148 @@
+﻿@model List<_11_DangThuyTrang_BussinessObjects.Models.ShowTime>
+
+@{
+    ViewData["Title"] = "ShowTime Page";
+}
+
+<h1>ShowTime Page</h1>
+
+<div class="date-selection">
+    <button id="prevBtn">Previous</button>
+    <div id="dateContainer"></div>
+    <button id="nextBtn">Next</button>
+</div>
+
+<h2>ShowTimes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Movie</th>
+            <th>Showroom</th>
+            <th>Start Time</th>
+        </tr>
+    </thead>
+    <tbody id="showTimesBody">
+    </tbody>
+</table>
+
+<style>
+    .date-selection {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #dateContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+        #dateContainer span {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+            #dateContainer span.active {
+                font-weight: bold;
+            }
+</style>
+
+<script>
+    // Biến lưu trữ ngày hiện tại
+    var currentDate = new Date();
+
+    function renderDateSelection() {
+        var dateContainer = document.getElementById('dateContainer');
+        dateContainer.innerHTML = '';
+        for (var i = 0; i < 7; i++) {
+            var date = new Date();
+            date.setDate(currentDate.getDate() + i);
+            var dateString = date.toISOString().slice(0, 10);
+            var span = document.createElement('span');
+            span.textContent = dateString;
+            span.setAttribute('data-date', dateString);
+            span.addEventListener('click', function () {
+                document.querySelectorAll('#dateContainer span').forEach(function (el) {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+                fetchShowTimes(this.getAttribute('data-date'));
+            });
+            dateContainer.appendChild(span);
+        }
+        // Đánh dấu ngày hiện tại
+        document.querySelector(`#dateContainer span[data-date="${currentDate.toISOString().slice(0, 10)}"]`).classList.add('active');
+    }
+    function fetchShowTimes(date) {
+        fetch(`https://localhost:7230/api/ShowTime/bydate?date=${date}`)
+            .then(response => response.json())
+            .then(showTimes => {
+                var showTimesBody = document.getElementById('showTimesBody');
+                showTimesBody.innerHTML = '';
+                showTimes.forEach(showTime => {
+                    var row = document.createElement('tr');
+                    var startTimeCell = document.createElement('td');
+                    var startTimes = showTime.startTime.split(', ');
+                    startTimes.forEach(startTime => {
+                        var button = document.createElement('button');
+                        button.textContent = startTime;
+                        button.onclick = function () {
+                            var startTimeId = null;
+                            if (showTime.movie && showTime.movie.showTimes) {
+                                showTime.movie.showTimes.forEach(time => {
+                                    if (time && time.startTime === startTime) {
+                                        startTimeId = time.id;
+                                    }
+                                });
+                            }
+                            filterByStartTime(startTimeId, startTime);
+                        };
+                        startTimeCell.appendChild(button);
+                        if (startTimes.indexOf(startTime) < startTimes.length - 1) {
+                            startTimeCell.appendChild(document.createTextNode('  '));
+                        }
+                    });
+                    row.innerHTML = `
+                            <td>
+                                <div>
+                                    <div>${showTime.movie.title}</div>
+                                    <img src="${showTime.movie.image}" alt="${showTime.movie.title}" style="width: 100px;">
+                                </div>
+                            </td>
+                            <td>${showTime.showroom.name}</td>
+                        `;
+                    row.appendChild(startTimeCell);
+                    showTimesBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching ShowTimes:', error));
+    }
+
+
+    function filterByStartTime(showTimeId, startTime) {
+        // Chuyển các giá trị showTimeId và startTime sang trang khác
+        window.location.href = `https://localhost:7021/Pages?showTimeId=${showTimeId}`;
+    }
+
+    // Event listener for next button
+    document.getElementById('nextBtn').addEventListener('click', function () {
+        // Tăng ngày hiện tại lên 1 ngày để chuyển sang ngày tiếp theo
+        currentDate.setDate(currentDate.getDate() + 1);
+        renderDateSelection();
+    });
+
+    // Event listener for previous button
+    document.getElementById('prevBtn').addEventListener('click', function () {
+        // Không cho phép di chuyển trước ngày hiện tại
+        if (currentDate <= new Date()) return;
+        // Giảm ngày hiện tại đi 1 ngày để chuyển về ngày trước đó
+        currentDate.setDate(currentDate.getDate() - 1);
+        renderDateSelection();
+    });
+
+    renderDateSelection();
+</script>
