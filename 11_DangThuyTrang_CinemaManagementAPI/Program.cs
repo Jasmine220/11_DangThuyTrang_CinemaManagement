@@ -13,7 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(op => op.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(option =>
+{
+    option.AddDefaultPolicy(p =>
+            p.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
@@ -31,5 +37,5 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();

@@ -7,4 +7,8 @@
     <RootNamespace>_11_DangThuyTrang_CinemaManagementClient</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\11_DangThuyTrang_BussinessObjects\11_DangThuyTrang_BussinessObjects.csproj" />
+  </ItemGroup>
+
 </Project>
