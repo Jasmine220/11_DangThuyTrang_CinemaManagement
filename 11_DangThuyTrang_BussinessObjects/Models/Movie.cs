@@ -20,6 +20,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public string? Rated { get; set; }
         public string? Image { get; set; }
         public int? GenreId { get; set; }
+        public double? PriceTicket { get; set; }
 
         public virtual Genre? Genre { get; set; }
         public virtual ICollection<ShowTime> ShowTimes { get; set; }

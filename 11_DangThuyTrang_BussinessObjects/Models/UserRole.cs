@@ -5,6 +5,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
 {
     public partial class UserRole
     {
+        public int UserroleId { get; set; }
         public int? UserId { get; set; }
         public int? RoleId { get; set; }
 

@@ -32,6 +32,23 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 			return showRoomSeats;
 		}
 
+		public static ShowRoomSeat GetShowRoomSeatById(int showRoomSeatId)
+		{
+			ShowRoomSeat? showRoomSeat = null;
+			try
+			{
+				using(var context = new _11_DangThuyTrang_CinemaManagementContext())
+				{
+					showRoomSeat = context.ShowRoomSeats.FirstOrDefault(s => s.ShowroomseatId == showRoomSeatId);
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new ApplicationException("Error getting show room seat", ex);
+			}
+			return showRoomSeat;
+		}
+
 		public static void UpdateShowRoomSeats(int showroomId, int[] seatIds)
 		{
 			List<ShowRoomSeat> showRoomSeats = null;
