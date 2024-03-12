@@ -1,0 +1,56 @@
+﻿@model _11_DangThuyTrang_BussinessObjects.Models.Ticket
+@{
+    ViewData["Title"] = "Ticket";
+}
+<style>
+    .payment-method-container,
+    .ticket-info-container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+</style>
+<h1 style="text-align: center; margin-bottom: 50px;">Nhập thông tin/Thanh Toán</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="payment-method-container">
+            <h2>Phương thức thanh toán</h2>
+            <form>
+                <div class="form-group">
+                    <label for="paymentMethod">Chọn phương thức thanh toán:</label>
+                    <select class="form-control" id="paymentMethod">
+                        <option value="VNPAY">Thanh toán online bằng VNPAY</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="ticket-info-container">
+            <h2>Thông tin vé</h2>
+            <div class="ticket-info">
+                <div class="ticket-details">
+                    <h4>@Model.Showroomseat.Showroom.Name - @Model.Showtime.Date?.ToString("dd/MM/yyyy") - Suất Chiếu: @Model.Showtime.StartTime</h4>
+                    <hr />
+                    <div style="overflow: hidden;">
+                        <div style="float: left; margin-right: 10px;">
+                            <p style="font-weight: bold">@Model.Showtime.Movie.Title</p>
+                            <p>@Model.Quantity x @Model.Showroomseat.Type</p>
+                            <p>@Model.Showroomseat.Seat.Name</p>
+                        </div>
+                        <div style="float: right; margin-right: 10px;">
+                            <img src="@Model.Showtime.Movie.Image" alt="@Model.Showtime.Movie.Title" style="max-width: 100px; max-height: 150px;">
+                        </div>
+                    </div>
+                        <hr />
+                        <p>Tổng tiền: @Model.TotalPrice?.ToString("N0") VNĐ</p>
+                   
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <button class="btn btn-primary">Thanh toán</button>
+        </div>
+    </div>
+
+</div>
