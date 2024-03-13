@@ -2,7 +2,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession(op =>
+{
+    op.Cookie.Name = "IsLoggedIn";
+    op.IdleTimeout = TimeSpan.FromMinutes(30);
+    op.Cookie.IsEssential = true;
 
+});
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,7 +22,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();

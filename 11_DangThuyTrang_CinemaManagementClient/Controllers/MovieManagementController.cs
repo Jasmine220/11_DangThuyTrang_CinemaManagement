@@ -26,7 +26,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 			};
 			List<Movie> listProducts = JsonSerializer.Deserialize<List<Movie>>(strData, options);
 			ViewBag.Keyword = keyword;
-			return View(listProducts);
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            return View(listProducts);
 		}
 		public async Task<IActionResult> Detail(int id)
 		{
@@ -42,7 +46,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 				};
 				product = JsonSerializer.Deserialize<Movie>(strData, options);
 			}
-			return View(product);
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            return View(product);
 		}
 
 		public async Task<ActionResult> Create()
@@ -55,7 +63,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 			};
 			List<Genre> genreList = JsonSerializer.Deserialize<List<Genre>>(strData2, options2);
 			ViewData["GenreList"] = genreList;
-			return View();
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            return View();
 		}
 
 		[HttpPost]
@@ -93,7 +105,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             {
                 ViewData["GenreList"] = genreList;
             }
-
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View(product);
         }
         [HttpPost]
@@ -106,7 +121,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 		public async Task<ActionResult> Delete(int id)
 		{
 			await client.DeleteAsync(MovieApiUrl + "/Delete/" + id);
-			return RedirectToAction("Index");
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            return RedirectToAction("Index");
 		}
 	}
 }
