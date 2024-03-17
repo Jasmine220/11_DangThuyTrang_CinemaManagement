@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\11_DangThuyTrang_BussinessObjects\11_DangThuyTrang_BussinessObjects.csproj" />
+    <ProjectReference Include="..\11_DangThuyTrang_DataAccess\11_DangThuyTrang_DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

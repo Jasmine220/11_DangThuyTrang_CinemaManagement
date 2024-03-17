@@ -20,7 +20,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                     ticket = context.Tickets
                     .Include(st => st.PaymentMethod)
                     .Include(st => st.Customer)
-                    .Include (st => st.Showroomseat)
+                    .Include (st => st.Showroomseat).ThenInclude(st => st.Showroom).ThenInclude(s => s.ShowRoomSeats).ThenInclude(s => s.Seat)
                     .Include(st => st.Showtime).ThenInclude(st => st.Movie)
                     .SingleOrDefault(s => s.Id == id);
                 }
