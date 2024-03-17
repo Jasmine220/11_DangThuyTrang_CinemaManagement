@@ -17,7 +17,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.DTO.Response
 
         //showtime
         public string? StartTime { get; set; }
-        public DateTime? Date { get; set; }
+        public string? Date { get; set; }
         public int MovieId { get; set; }
         public string MovieTitle { get; set; }
         public string MovieImage { get; set; }

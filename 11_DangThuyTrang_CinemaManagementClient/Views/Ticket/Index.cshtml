@@ -8,11 +8,16 @@
 <head>
     <title>@ViewData["Title"]</title>
     <style>
+        /* .container {
+                                            width: 100%;
+                                            margin: 0;
+                                        } */
+
         h1 {
             text-align: center;
         }
 
-        .main-content h1 {
+        .main-content h5 {
             text-align: center;
         }
 
@@ -31,6 +36,12 @@
             background-color: #f5f5f5;
         }
 
+        ul, ol, li {
+            list-style: none;
+            float: left;
+            text-decoration: none;
+        }
+
         .seat {
             border: 1px solid dashed;
             width: 22px;
@@ -47,37 +58,79 @@
 
         .ticketbox {
             text-align: center;
+            width: 80%;
+            height: auto;
         }
 
-        .icon:before{
+        .icon:before {
             content: "";
             display: inline-block;
             width: 18px;
             height: 18px;
             margin: 0 5px 0 0;
         }
-        
-        .bottom-content{
-            background-color: #000;
-            margin-top: 30px;
-            line-height: 18px;
+
+        .main-content {
+            margin-top: 20px;
         }
 
-        .btn-previous, btn-next{
-            position: absolute;
-            bottom: 20px;
+        .bottom-content {
+            background-color: #000;
+            color: white;
+            margin-top: 30px;
+            line-height: 18px;
+            height: 200px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+        }
+
+        .btn-previous, btn-next {
+            /* bottom: 20px; */
             width: 106px;
             height: 108px;
-            margin: 0 0 0 3px;
-            background: url(https://www.cgv.vn/skin/frontend/cgv/default/images/bg-cgv/bg-cgv-button-process.png) no-repeat;
+            margin-top: 30px;
         }
 
         .btn-previous {
-            background-position: -152px 0;
+            /* background-position: -152px 0; */
+            width: 106px;
+            display: inline-block;
+            margin: 0 0 0 3px;
+            height: 108px;
+            /* vertical-align: top; */
         }
 
         .btn-next {
-            background-position: -152px -441px;
+            /* background-position: -152px -441px; */
+        }
+
+        .cart {
+            width: 750px;
+        }
+
+            .cart img {
+                width: 74px;
+                height: 108px;
+                display: inline-block;
+            }
+
+            .cart item {
+                width: 30%;
+                margin-left: 1%;
+                font-size: 12px;
+            }
+
+            .cart ul {
+                width: 100%;
+            }
+
+            .cart li {
+                text-decoration: none;
+            }
+
+        .product-details {
+            display: inline-block;
         }
     </style>
 </head>
@@ -90,35 +143,51 @@
 
         <div class="top-content">
             <div class="mb-2">
-                <p>@Model.ShowRoomName | @Model.TheaterName | @Model.NumberSeat</p>
+                <p>@Model.ShowRoomName | @Model.TheaterName | Số ghế: @Model.NumberSeat</p>
                 <p>@Model.Date @Model.StartTime</p>
             </div>
         </div>
 
         <div class="main-content">
             <div class="mb-2">
-                <h3>Người / Ghế</h3>
+                <h5>Người / Ghế</h5>
             </div>
             <div class="ticketbox">
-                <div class="row">
-                    <div class="seat">A1</div>
-                    <div class="seat">A2</div>
-                    <div class="seat">A3</div>
-                    <div class="seat">A4</div>
-                    <div class="seat">A5</div>
+                @foreach (var i in Model.ShowRoomSeats)
+                {
+                    <div class="row">
+
+                        @for (int j = 0; j < Model.ShowRoomSeats.Count; j++)
+                        {
+                            <div class="seat" id="@Model.ShowRoomSeats[j]">@Model.ShowRoomSeats[j].Seat.Name</div>
+                            if (Model.ShowRoomSeats[j].Seat.Name.IndexOf('A') == -1)
+                            {
+                                break;
+                            }
+                        }
+                    </div>
+                }
+                
+
+                @*  <div class="row">
+                <div class="seat">A1</div>
+                <div class="seat">A2</div>
+                <div class="seat">A3</div>
+                <div class="seat">A4</div>
+                <div class="seat">A5</div>
                 </div>
                 <div class="row">
-                    <div class="seat">A1</div>
-                    <div class="seat">A2</div>
-                    <div class="seat">A3</div>
-                    <div class="seat">A4</div>
-                    <div class="seat">A5</div>
-                </div>
+                <div class="seat">A1</div>
+                <div class="seat">A2</div>
+                <div class="seat">A3</div>
+                <div class="seat">A4</div>
+                <div class="seat">A5</div>
+                </div> *@
             </div>
             <div class="ticketbox-notice">
                 <div class="iconlist">
                     <div class="icon">
-                       Đã chọn
+                        Đã chọn
                     </div>
                     <div class="icon">
                         Không thể chọn
@@ -133,12 +202,9 @@
 
             <div class="cart">
                 <ul>
-                    <li>
+                    <li class="item">
                         <div class="product-details">
                             <table>
-                                <colgroup>
-                                    <col width="40" />
-                                </colgroup>
                                 <tbody>
                                     <tr>
                                         <td>
@@ -153,7 +219,7 @@
                         </div>
                     </li>
 
-                    <li>
+                    <li class="item">
                         <div class="product-details">
                             <table>
                                 <tbody>
@@ -178,7 +244,7 @@
                         </div>
                     </li>
 
-                    <li>
+                    <li class="item">
                         <div class="product-details">
                             <table>
                                 <thead>
