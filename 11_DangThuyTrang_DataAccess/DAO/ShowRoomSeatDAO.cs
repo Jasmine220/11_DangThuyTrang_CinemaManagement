@@ -17,11 +17,11 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 			{
 				using (var context = new _11_DangThuyTrang_CinemaManagementContext())
 				{
-					showRoomSeats = showroomId != null 
+					showRoomSeats = showroomId != null
 						? context.ShowRoomSeats
 						.Include(srs => srs.Seat)
 						.Where(srs => srs.ShowroomId == showroomId)
-						.ToList() 
+						.ToList()
 						: context.ShowRoomSeats.Include(srs => srs.Seat).ToList();
 				}
 			}
@@ -30,6 +30,49 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 				throw new ApplicationException("Error getting show room seats.", ex);
 			}
 			return showRoomSeats;
+		}
+
+		public static ShowRoomSeat GetShowRoomSeatById(int showRoomSeatId)
+		{
+			ShowRoomSeat? showRoomSeat = null;
+			try
+			{
+				using(var context = new _11_DangThuyTrang_CinemaManagementContext())
+				{
+					showRoomSeat = context.ShowRoomSeats.FirstOrDefault(s => s.ShowroomseatId == showRoomSeatId);
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new ApplicationException("Error getting show room seat", ex);
+			}
+			return showRoomSeat;
+		}
+
+		public static void UpdateShowRoomSeats(int showroomId, int[] seatIds)
+		{
+			List<ShowRoomSeat> showRoomSeats = null;
+			try
+			{
+				using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+				{
+					showRoomSeats = context.ShowRoomSeats.Where(s => seatIds.ToList().Contains((int)s.SeatId) && s.ShowroomId == showroomId).ToList();
+					if(showRoomSeats.Count == 0)
+					{
+				
+						throw new ApplicationException("Seats not found");
+					}
+					foreach(var seat in showRoomSeats)
+					{
+						seat.Status = true;
+					}
+					context.ShowRoomSeats.UpdateRange(showRoomSeats);
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new ApplicationException("Error update show room seats.", ex);
+			}
 		}
 	}
 }

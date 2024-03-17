@@ -1,3 +1,5 @@
+using _11_DangThuyTrang_CinemaManagementClient.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,10 @@ builder.Services.AddSession(op =>
     op.Cookie.Name = "IsLoggedIn";
     op.IdleTimeout = TimeSpan.FromMinutes(30);
     op.Cookie.IsEssential = true;
+//Add session to save ticket
+builder.Services.AddSession();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<BillService>();
 
 });
 builder.Services.AddHttpContextAccessor();
@@ -26,6 +32,7 @@ app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
