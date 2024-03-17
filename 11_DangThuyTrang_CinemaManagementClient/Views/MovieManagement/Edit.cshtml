@@ -1,0 +1,53 @@
+﻿@using _11_DangThuyTrang_BussinessObjects.Models;
+@model _11_DangThuyTrang_BussinessObjects.Models.Movie
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var genreList = ViewData["GenreList"] as List<Genre>;
+}
+<form asp-controller="Movie" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="Title" />
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="Description" />
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Director</label>
+        <input type="text" class="form-control" asp-for="Director" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Length</label>
+        <input type="number" class="form-control" asp-for="Length" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Language</label>
+        <input type="text" class="form-control" asp-for="Language" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">PurchaseTime</label>
+        <input type="date" class="form-control" asp-for="PurchaseTime" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Image</label>
+        <input type="text" class="form-control" asp-for="Image" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Price Ticket</label>
+        <input type="number" class="form-control" asp-for="PriceTicket" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Genre</label>
+        <select class="form-control" asp-for="GenreId">
+            <option value="">Select Genre</option>
+            @foreach (var genre in genreList)
+            {
+                <option value="@genre.Id">@genre.Name</option>
+            }
+        </select>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Save" />
+    <button class="btn btn-danger">@Html.ActionLink("Cancel", "Index")</button>
+</form>

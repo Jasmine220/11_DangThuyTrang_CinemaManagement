@@ -15,6 +15,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
 

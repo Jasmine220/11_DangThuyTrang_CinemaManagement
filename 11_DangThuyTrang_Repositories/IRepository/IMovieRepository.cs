@@ -15,5 +15,6 @@ namespace _11_DangThuyTrang_Repositories.IRepository
         void DeleteMovie(Movie p);
         void UpdateMovie(UpdateMovieDTO movie);
         List<Movie> GetMovies(string? keyword);
+        List<Genre> GetGenres();
     }
 }

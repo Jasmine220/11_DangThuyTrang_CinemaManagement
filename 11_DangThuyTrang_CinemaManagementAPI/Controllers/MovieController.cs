@@ -16,15 +16,11 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
         public ActionResult<IEnumerable<Movie>> GetMovies(string? keyword)
         {
             var products = repository.GetMovies(keyword);
-
-            if (products == null || products.Count == 0)
-            {
-                return NotFound("Cannot find Movie");
-            }
-
             return products;
         }
-        [HttpPost("AddMovie")]
+		[HttpGet("GetAllGenre")]
+		public ActionResult<IEnumerable<Genre>> GetGenres() => repository.GetGenres();
+		[HttpPost("AddMovie")]
         public IActionResult AddMovie(MovieRequestDTO p)
         {
             repository.SaveMovie(p);
