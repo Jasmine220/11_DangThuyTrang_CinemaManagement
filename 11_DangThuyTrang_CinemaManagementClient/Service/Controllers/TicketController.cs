@@ -40,7 +40,32 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             List<ShowRoomSeat> showRoomSeats = JsonSerializer.Deserialize<List<ShowRoomSeat>>(strDataShowRoomSeat, options);
             ShowRoom showRoom = JsonSerializer.Deserialize<ShowRoom>(strDataShowRoom, options);
             ShowTime showTime = JsonSerializer.Deserialize<ShowTime>(strDataShowTime, options);
-            //showRoomSeats = showRoomSeats.OrderBy(s => s.Seat.Name).ToList();
+            showRoomSeats = showRoomSeats.OrderBy(s => s.Seat.Name).ToList();
+
+            List<ShowRoomSeat> rowA = showRoomSeats.Where(s => s.Seat.Name.Contains("A")).ToList();
+            List<ShowRoomSeat> rowB = showRoomSeats.Where(s => s.Seat.Name.Contains("B")).ToList();
+            List<ShowRoomSeat> rowC = showRoomSeats.Where(s => s.Seat.Name.Contains("C")).ToList();
+            List<ShowRoomSeat> rowD = showRoomSeats.Where(s => s.Seat.Name.Contains("D")).ToList();
+            List<ShowRoomSeat> rowE = showRoomSeats.Where(s => s.Seat.Name.Contains("E")).ToList();
+            List<ShowRoomSeat> rowF = showRoomSeats.Where(s => s.Seat.Name.Contains("F")).ToList();
+            List<ShowRoomSeat> rowG = showRoomSeats.Where(s => s.Seat.Name.Contains("G")).ToList();
+            List<ShowRoomSeat> rowH = showRoomSeats.Where(s => s.Seat.Name.Contains("H")).ToList();
+            List<ShowRoomSeat> rowJ = showRoomSeats.Where(s => s.Seat.Name.Contains("J")).ToList();
+            List<ShowRoomSeat> rowK = showRoomSeats.Where(s => s.Seat.Name.Contains("K")).ToList();
+            List<ShowRoomSeat> rowL = showRoomSeats.Where(s => s.Seat.Name.Contains("L")).ToList();
+            
+            //display showroomseat by row
+            ViewBag.rowA = rowA;
+            ViewBag.rowB = rowB;
+            ViewBag.rowC = rowC;
+            ViewBag.rowD = rowD;
+            ViewBag.rowE = rowE;
+            ViewBag.rowF = rowF;
+            ViewBag.rowG = rowG;
+            ViewBag.rowH = rowH;
+            ViewBag.rowJ = rowJ;
+            ViewBag.rowK = rowK;
+            ViewBag.rowL = rowL;
 
             DateTime date;
             string dateString = "";
