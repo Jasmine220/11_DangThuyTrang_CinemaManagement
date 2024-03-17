@@ -1,0 +1,472 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        /* .container {
+                                                                            width: 100%;
+                                                                            margin: 0;
+                                                                        } */
+
+        h1 {
+            text-align: center;
+        }
+
+        .main-content h5 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        /* tr:hover {
+                    background-color: #f5f5f5;
+                } */
+
+        ul, ol, li {
+            list-style: none;
+            float: left;
+            text-decoration: none;
+        }
+
+        .seat {
+            border: 1px solid dashed;
+            width: 22px;
+            height: 22px;
+            font-size: 7pt;
+            margin: 0 1px;
+        }
+
+        .top-content {
+            width: 100%;
+            padding: 10px;
+            background: #fff1ce;
+        }
+
+
+        .icon:before {
+            content: "";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin: 0 5px 0 0;
+        }
+
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .bottom-content {
+            background-color: #000;
+            color: white;
+            margin-top: 30px;
+            line-height: 18px;
+            height: 200px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+        }
+
+        .btn-previous, btn-next {
+            /* bottom: 20px; */
+            width: 106px;
+            height: 108px;
+            margin-top: 30px;
+        }
+
+        .btn-previous {
+            /* background-position: -152px 0; */
+            width: 106px;
+            display: inline-block;
+            margin: 0 0 0 3px;
+            height: 108px;
+            /* vertical-align: top; */
+        }
+
+        .btn-next {
+            /* background-position: -152px -441px; */
+        }
+
+        .cart {
+            width: 750px;
+        }
+
+            .cart img {
+                width: 74px;
+                height: 108px;
+                display: inline-block;
+            }
+
+            .cart item {
+                width: 30%;
+                margin-left: 1%;
+                font-size: 12px;
+            }
+
+            .cart ul {
+                width: 100%;
+            }
+
+            .cart li {
+                text-decoration: none;
+            }
+
+        .product-details {
+            display: inline-block;
+        }
+
+        .ticketbox {
+            width: 100%;
+            height: auto;
+        }
+
+        .ticketbox-notice {
+            margin-top: 30px;
+        }
+
+        .btn-notice {
+            width: 10px;
+            height: 16px;
+            background-color: white;
+        }
+
+        .seat {
+            width: 22px;
+            height: 25px;
+            text-align: center;
+            border: 1px solid;
+            margin: 2px;
+            padding: 1px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="page-title">
+            <h1>Booking Online</h1>
+        </div>
+
+        <div class="top-content">
+            <div class="mb-2">
+                <p>@Model.ShowRoomName | @Model.TheaterName | Số ghế: @Model.NumberSeat</p>
+                <p>@Model.Date @Model.StartTime</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="mb-2">
+                <h5>Người / Ghế</h5>
+            </div>
+            <div class="ticketbox">
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowA)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowB)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowC)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowD)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowE)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowF)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowG)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowG)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowH)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowJ)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowK)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+                <div class="row">
+                    @foreach (var showRoomSeat in ViewBag.rowL)
+                    {
+                        if (showRoomSeat.Status)
+                        {
+                            <input type="button" style="border-color: #01c73c" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket" />
+                        }
+                        else
+                        {
+                            <input type="button" style="border-color: #f71708" class="seat" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket)" />
+
+                        }
+                    }
+                </div>
+
+            </div>
+            <div class="ticketbox-notice">
+                <div class="iconlist">
+                    <div class="icon">
+                        <button class="btn-notice" style="border-color: red"></button>
+                        Đã chọn
+                    </div>
+                    <div class="icon">
+                        <button class="btn-notice" style="border-color: green"></button>
+                        Chưa chọn
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bottom-content">
+            <a class="btn-previous" href="" title="previous">Previous</a>
+
+            <div class="cart">
+                <ul>
+                    <li class="item">
+                        <div class="product-details">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <img src="@Model.MovieImage" alt="Product Details" />
+                                        </td>
+                                        <td>
+                                            <p>@Model.MovieTitle</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+
+                    <li class="item">
+                        <div class="product-details">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Rạp</td>
+                                        <td>@Model.TheaterName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Suất chiếu</td>
+                                        <td>@Model.StartTime @Model.Date</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phòng chiếu</td>
+                                        <td>@Model.ShowRoomName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ghế</td>
+                                        <td id="seat-list"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+
+                    <li class="item">
+                        <div class="product-details">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>Giá vé</td>
+                                        <td id="price-ticket">@Model.PriceTicket<span>đ</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tổng</td>
+                                        <td id="total-price"><span>đ</span></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <a class="btn-next" href="" title="next">Next</a>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    function selectSeat(seatId, seatName, priceTicket) {
+        console.log("seatId", seatId);
+        console.log("seatName", seatName);
+        console.log("priceTicket", priceTicket);
+        var seatListTd = document.getElementById('seat-list');
+        var priceTicketTd = document.getElementById('price-ticket');
+        var totalPriceTd = document.getElementById('total-price');
+
+        var countSeatList = seatListTd.textContent.trim().split(",");
+        var currentValueSeatList = seatListTd.textContent.trim();
+        var currentPriceTicket = priceTicketTd.textContent.trim();
+        var currentTotalTicket = totalPriceTd.textContent.trim();
+        //+ seatName into value of current seat list
+        currentValueSeatList += (countSeatList.length > 0 ? "," : " ") + seatName;
+        console.log("currentValueSeatList", currentValueSeatList);
+        //assign that value into content of tag td has id = seat-list
+        seatListTd.textContent = currentValueSeatList;
+
+        //set value for price-ticket tag
+        priceTicketTd.textContent = priceTicket;
+
+        //calculate totalPrice = price-ticket * number of seat
+        var totalPrice = priceTicket * countSeatList.length;
+        console.log("totalPrice", totalPrice);
+        //set value for total-price tag
+        totalPriceTd.textContent = totalPrice.toString();
+    }
+</script>
+

@@ -14,9 +14,9 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public int? PaymentMethodId { get; set; }
         public int? ShowroomseatId { get; set; }
 
-        public virtual User Customer { get; set; }
-        public virtual PaymentMethod PaymentMethod { get; set; }
-        public virtual ShowRoomSeat Showroomseat { get; set; }
-        public virtual ShowTime Showtime { get; set; }
+        public virtual User? Customer { get; set; }
+        public virtual PaymentMethod? PaymentMethod { get; set; }
+        public virtual ShowRoomSeat? Showroomseat { get; set; }
+        public virtual ShowTime? Showtime { get; set; }
     }
 }
