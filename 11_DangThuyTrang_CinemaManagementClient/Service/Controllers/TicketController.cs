@@ -11,6 +11,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly HttpClient client = null;
+        private readonly BillService _billService;
         private string ShowRoomSeatApiUrl = "";
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
@@ -86,7 +87,8 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 PriceTicket = showTime.Movie.PriceTicket,
                 ShowRoomId = showRoom.Id,
                 ShowRoomName = showRoom.Name,
-                ShowRoomSeats = showRoomSeats
+                ShowRoomSeats = showRoomSeats,
+                ShowTimeId = showtimeId,
             };
             return View(response);
         }
