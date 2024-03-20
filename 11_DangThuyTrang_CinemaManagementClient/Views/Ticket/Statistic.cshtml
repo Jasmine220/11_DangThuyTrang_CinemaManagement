@@ -3,3 +3,96 @@
 *@
 @{
 }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thống Kê Doanh Thu</title>
+    <!--add thư viện-->
+    @* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.0"></script>
+
+
+</head>
+<body>
+
+    <h4>Doanh Thu Hàng Ngày</h4>
+    <!--Tạo canvas-->
+    <div id="chartContainer">
+        <canvas id="dailyRevenueChart" width="300" height="400"></canvas>
+    </div>
+    <h4 style="margin-top:20px">Top 10 phim có doanh thu cao nhất</h4>
+
+    <div>
+        <canvas id="topProductsChart" width="300" height="200"></canvas>
+    </div>
+
+    <script>
+        var dailyRevenuesLabels = [];
+        var dailyRevenuesData = [];
+        @foreach (var dailyRevenue in Model)
+        {
+            <text>
+                dailyRevenuesLabels.push('@dailyRevenue.Date.ToString("yyyy-MM-dd")');
+            dailyRevenuesData.push('@dailyRevenue.Amount');
+            </text>
+        }
+        var ctx = document.getElementById('dailyRevenueChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: dailyRevenuesLabels,
+                datasets: [{
+                    label: 'Doanh Thu Theo Ngày',
+                    data: dailyRevenuesData,
+                    backgroundColor: 'rgb(37, 150, 190)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    barThickness: 30,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        max: 10000000,
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var topProducts = @Html.Raw(Json.Serialize(ViewData["TopProducts"]));
+        console.log(topProducts);
+
+        // Lấy canvas và context để vẽ biểu đồ
+        var ctxProductsChart = document.getElementById('topProductsChart').getContext('2d');
+        // Tạo biểu đồ cột ngang
+        var topProductsChart = new Chart(ctxProductsChart, {
+            type: 'horizontalBar',
+            data: {
+                labels: topProducts.map(product => product.title),
+                datasets: [{
+                    label: 'Số lượng vé bán',
+                    data: topProducts.map(product => product.sale),
+                    backgroundColor: 'rgb(37, 150, 190)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    maintainAspectRatio: false,
+                }
+            }
+        });
+
+    </script>
+
+</body>
+</html>

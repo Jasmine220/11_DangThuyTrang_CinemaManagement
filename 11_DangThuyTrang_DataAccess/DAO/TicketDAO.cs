@@ -1,12 +1,6 @@
 ﻿using _11_DangThuyTrang_BussinessObjects.DTO;
 using _11_DangThuyTrang_BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _11_DangThuyTrang_DataAccess.DAO
 {
@@ -54,16 +48,15 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             }
         }
 
-        public static List<MovieDTO> ShowStatistic()
+        public static StatisticResponse ShowStatistic()
         {
             using (var context = new _11_DangThuyTrang_CinemaManagementContext())
             {
                 List<DailyRevenue> dailyRevenues = new List<DailyRevenue>();
-                List<MonthRevenue> monthRevenues = new List<MonthRevenue>();
                 //get ticket from db
 
                 // Lấy dữ liệu trong vòng 1 tháng gần đây (có thể điều chỉnh)
-                var tickets = context.Tickets.Where(t => t.CreatedTime >= DateTime.Now.AddMonths(1)).ToList();
+                var tickets = context.Tickets.Where(t => t.CreatedTime <= DateTime.Now.AddMonths(1)).ToList();
 
                 // Nhóm và tính toán tổng doanh thu theo ngày
                 dailyRevenues = tickets.GroupBy(t => t.CreatedTime.Date)
@@ -110,7 +103,12 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                         Sale = movie.Sale
                     });
                 }
-                return moviesDTO;
+                StatisticResponse statisticResponse = new StatisticResponse
+                {
+                    DailyRevenues = dailyRevenues,
+                    MovieDTOs = moviesDTO,
+                };
+                return statisticResponse;
             }
 
         }

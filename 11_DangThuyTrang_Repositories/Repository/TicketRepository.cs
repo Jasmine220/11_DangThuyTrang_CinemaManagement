@@ -11,7 +11,7 @@ namespace _11_DangThuyTrang_Repositories.Repository
 {
 	public class TicketRepository: ITicketRepository
 	{
-		public List<MovieDTO> ShowStatistic() => TicketDAO.ShowStatistic(); 
+		public StatisticResponse ShowStatistic() => TicketDAO.ShowStatistic(); 
 
     }
 }

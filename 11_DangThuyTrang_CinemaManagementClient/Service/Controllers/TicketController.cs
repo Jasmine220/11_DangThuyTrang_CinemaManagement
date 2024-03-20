@@ -100,17 +100,18 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         {
             HttpResponseMessage responseTicket = await client.GetAsync($"{TicketApiUrl}/statistic");
 
-            string strDataShowRoomSeat = await responseTicket.Content.ReadAsStringAsync();
+            string strData = await responseTicket.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             };
-            List<MovieDTO> movieDTOs = JsonSerializer.Deserialize<List<MovieDTO>>(strDataShowRoomSeat, options);
+            StatisticResponse statisticResponse = JsonSerializer.Deserialize<StatisticResponse>(strData, options);
+            List<MovieDTO> movieDTOs = statisticResponse.MovieDTOs;
+            List<DailyRevenue> dailyRevenues = statisticResponse.DailyRevenues;
 
             //save to view data
             ViewData["TopProducts"] = movieDTOs;
-
-            return View();
+            return View(dailyRevenues);
         }
 
     }

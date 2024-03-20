@@ -9,7 +9,7 @@ namespace _11_DangThuyTrang_Repositories.IRepository
 {
 	public interface ITicketRepository
 	{
-		public List<MovieDTO> ShowStatistic();
+		public StatisticResponse ShowStatistic();
 
     }
 }
