@@ -8,7 +8,7 @@ namespace _11_DangThuyTrang_BussinessObjects.Models
         public int Id { get; set; }
         public double? TotalPrice { get; set; }
         public int? CustomerId { get; set; }
-        public DateTime? CreatedTime { get; set; }
+        public DateTime CreatedTime { get; set; }
         public int? Quantity { get; set; }
         public int? ShowtimeId { get; set; }
         public int? PaymentMethodId { get; set; }
