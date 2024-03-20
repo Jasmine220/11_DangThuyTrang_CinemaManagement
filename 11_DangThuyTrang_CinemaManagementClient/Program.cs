@@ -10,9 +10,9 @@ builder.Services.AddSession(op =>
     op.IdleTimeout = TimeSpan.FromMinutes(30);
     op.Cookie.IsEssential = true;
 //Add session to save ticket
-builder.Services.AddSession();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<BillService>();
+//builder.Services.AddSession();
+//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+//builder.Services.AddScoped<BillService>();
 
 });
 builder.Services.AddHttpContextAccessor();

@@ -80,7 +80,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 NumberSeat = showRoom.NumberSeat,
                 StartTime = showTime.StartTime,
                 Date = dateString,
-                MovieId = showTime.MovieId,
+                MovieId = (int)showTime.MovieId,
                 MovieTitle = showTime.Movie.Title,
                 MovieImage = showTime.Movie.Image,
                 PriceTicket = showTime.Movie.PriceTicket,
