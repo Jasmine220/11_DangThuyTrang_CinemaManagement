@@ -121,7 +121,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                 {
                     moviesDTO.Add(new MovieDTO
                     {
-                        MovieId = movie.MovieId,
+                        MovieId = (int)movie.MovieId,
                         Title = movie.Title,
                         Sale = movie.Sale
                     });
