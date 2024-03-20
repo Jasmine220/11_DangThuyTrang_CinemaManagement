@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_BussinessObjects.Models;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_CinemaManagementClient.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
@@ -11,9 +12,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly HttpClient client = null;
+        private readonly BillService _billService;
         private string ShowRoomSeatApiUrl = "";
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
+        private string TicketApiUrl = "";
         public TicketController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -23,6 +26,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             ShowRoomSeatApiUrl = "https://localhost:7230/api/ShowRoomSeat";
             ShowRoomApiUrl = "https://localhost:7230/api/ShowRoom";
             ShowTimeApiUrl = "https://localhost:7230/api/ShowTime";
+            TicketApiUrl = "https://localhost:7230/api/Ticket";
         }
         public async Task<IActionResult> Index(int? showroomId, int? showtimeId)
         {
@@ -86,9 +90,28 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 PriceTicket = showTime.Movie.PriceTicket,
                 ShowRoomId = showRoom.Id,
                 ShowRoomName = showRoom.Name,
-                ShowRoomSeats = showRoomSeats
+                ShowRoomSeats = showRoomSeats,
+                ShowTimeId = showtimeId,
             };
             return View(response);
+        }
+
+        public async Task<IActionResult> Statistic()
+        {
+            HttpResponseMessage responseTicket = await client.GetAsync($"{TicketApiUrl}/statistic");
+
+            string strData = await responseTicket.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            StatisticResponse statisticResponse = JsonSerializer.Deserialize<StatisticResponse>(strData, options);
+            List<MovieDTO> movieDTOs = statisticResponse.MovieDTOs;
+            List<DailyRevenue> dailyRevenues = statisticResponse.DailyRevenues;
+
+            //save to view data
+            ViewData["TopProducts"] = movieDTOs;
+            return View(dailyRevenues);
         }
 
     }

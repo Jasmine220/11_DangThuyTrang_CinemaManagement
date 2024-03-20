@@ -10,6 +10,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.DTO.Response
         }
         //showroom
         public int ShowRoomId { get; set; }
+        public int? ShowTimeId { get; set; }
         public string? ShowRoomName { get; set; }
         public int? NumberSeat { get; set; }
         public int? TheaterId { get; set; }
