@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_BussinessObjects.Models;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_CinemaManagementClient.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
@@ -15,6 +16,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         private string ShowRoomSeatApiUrl = "";
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
+        private string TicketApiUrl = "";
         public TicketController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -24,6 +26,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             ShowRoomSeatApiUrl = "https://localhost:7230/api/ShowRoomSeat";
             ShowRoomApiUrl = "https://localhost:7230/api/ShowRoom";
             ShowTimeApiUrl = "https://localhost:7230/api/ShowTime";
+            TicketApiUrl = "https://localhost:7230/api/Ticket";
         }
         public async Task<IActionResult> Index(int? showroomId, int? showtimeId)
         {
@@ -91,6 +94,23 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 ShowTimeId = showtimeId,
             };
             return View(response);
+        }
+
+        public async Task<IActionResult> Statistic()
+        {
+            HttpResponseMessage responseTicket = await client.GetAsync($"{TicketApiUrl}/statistic");
+
+            string strDataShowRoomSeat = await responseTicket.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            List<MovieDTO> movieDTOs = JsonSerializer.Deserialize<List<MovieDTO>>(strDataShowRoomSeat, options);
+
+            //save to view data
+            ViewData["TopProducts"] = movieDTOs;
+
+            return View();
         }
 
     }
