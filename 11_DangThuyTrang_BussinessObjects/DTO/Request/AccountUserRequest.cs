@@ -1,4 +1,4 @@
-﻿namespace _11_DangThuyTrang_CinemaManagementClient.DTO
+﻿namespace _11_DangThuyTrang_BussinessObjects.DTO.Request
 {
     public class AccountUserRequest
     {

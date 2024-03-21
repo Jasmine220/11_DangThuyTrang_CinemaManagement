@@ -1,8 +1,8 @@
-﻿using _11_DangThuyTrang_CinemaManagementClient.DTO;
+﻿using _11_DangThuyTrang_BussinessObjects.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 
-namespace _11_DangThuyTrang_CinemaManagementWebClient.Controllers
+namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 {
     public class SignUpController : Controller
     {

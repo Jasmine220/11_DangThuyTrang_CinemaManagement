@@ -1,6 +1,6 @@
 ﻿using _11_DangThuyTrang_BussinessObjects.Models;
 
-namespace _11_DangThuyTrang_CinemaManagementClient.DTO.Response
+namespace _11_DangThuyTrang_BussinessObjects.Models
 {
     public class BookingTicketResponse
     {

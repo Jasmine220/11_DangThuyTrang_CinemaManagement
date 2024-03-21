@@ -1,3 +1,4 @@
+using _11_DangThuyTrang_CinemaManagementAPI.Service;
 using _11_DangThuyTrang_Repositories.IRepository;
 using _11_DangThuyTrang_Repositories.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -20,6 +21,8 @@ builder.Services.AddCors(option =>
                 .AllowAnyHeader()
                 .AllowAnyMethod());
 });
+
+builder.Services.AddScoped<IVNPayService, VNPayService>();
 
 var app = builder.Build();
 
