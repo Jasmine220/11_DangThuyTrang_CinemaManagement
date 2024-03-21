@@ -38,7 +38,7 @@ namespace _11_DangThuyTrang_CinemaManagementWebClient.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Đăng ký không thành công: " + ex.Message;
-                return RedirectToAction("Index");
+                return RedirectToAction("/Login");
             }
         }
     }
