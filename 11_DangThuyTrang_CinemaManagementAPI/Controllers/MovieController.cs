@@ -50,5 +50,29 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
             repository.UpdateMovie(p);
             return NoContent();
         }
+        [HttpGet("GetAllMovies")]
+        public ActionResult<IEnumerable<Movie>> GetAllMovies()
+        {
+            var movies = repository.GetAllMovies();
+            return Ok(movies);
+        }
+
+        [HttpGet("{movieId}")]
+        public IActionResult GetMovieDetail(int movieId)
+        {
+            try
+            {
+                var movieDetail = repository.GetMovieDetail(movieId);
+                if (movieDetail == null)
+                {
+                    return NotFound();
+                }
+                return Ok(movieDetail);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

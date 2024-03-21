@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_BussinessObjects.Models;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_DataAccess.DAO;
 using _11_DangThuyTrang_DataAccess.DTO;
 using _11_DangThuyTrang_Repositories.IRepository;
@@ -14,7 +15,10 @@ namespace _11_DangThuyTrang_Repositories.Repository
     {
         public void DeleteMovie(Movie p) => MovieDAO.DeleteMovie(p);
 
-		public List<Genre> GetGenres() => GenreDAO.GetGenres();
+        public List<Movie> GetAllMovies() => MovieDAO.GetAllMovies();
+
+
+        public List<Genre> GetGenres() => GenreDAO.GetGenres();
 
 		public List<Movie> GetMovies(string? keyword) => MovieDAO.GetMovies(keyword);
 
@@ -23,6 +27,6 @@ namespace _11_DangThuyTrang_Repositories.Repository
         public void SaveMovie(MovieRequestDTO movie) => MovieDAO.SaveMovie(movie);
 
         public void UpdateMovie(UpdateMovieDTO movie) => MovieDAO.UpdateMovie(movie);
-
+        public MovieDetailDTO? GetMovieDetail(int movieId) => MovieDAO.GetMovieDetail(movieId);
     }
 }

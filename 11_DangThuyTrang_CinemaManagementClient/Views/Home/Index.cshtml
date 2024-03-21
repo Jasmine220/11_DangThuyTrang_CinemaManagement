@@ -1,8 +1,157 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<_11_DangThuyTrang_BussinessObjects.Models.Movie>
+@{
+    ViewData["Title"] = "Movies";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Movies</h1>
+
+<div class="movie-grid">
+    @foreach (var movie in Model)
+    {
+        <div class="movie-item">
+            <div class="image-container">
+                <a href="@Url.Action("MovieDetail", "Home", new { id = movie.Id })">
+                    <img src="@movie.Image" alt="@movie.Title" class="movie-image" />
+                </a>
+                <div class="buttons">
+                    <a href="@Url.Action("MovieDetail", "Home", new { id = movie.Id })" class="btn btn-danger detail-btn">Xem chi tiết</a>
+                    <button class="btn btn-danger book-ticket-btn">Đặt vé</button>
+                </div>
+
+                
+            </div>
+            <div class="movie-info">
+                <h4 style="text-align: center;">@movie.Title</h4>
+                <p>Thể loại: @movie.Genre.Name</p>
+                <p>Thời lượng: @movie.Length phút</p>
+                <p>Khởi chiếu: @movie.PurchaseTime?.ToString("dd-MM-yyyy")</p>
+            </div>
+        </div>
+    }
 </div>
+
+
+<style>
+    .movie-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 20px;
+    }
+
+    .movie-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .movie-image {
+        width: 100%;
+        height: 400px; 
+        object-fit: cover; 
+
+
+    .movie-info {
+        margin-top: 10px;
+    }
+
+    .movie-info h2 {
+        margin-bottom: 5px;
+    }
+
+    .pagination {
+        margin-top: 20px;
+    }
+
+    .page-link {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .book-ticket-btn,
+    .detail-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        margin: 0 5px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .detail-btn {
+        text-decoration: none;
+    }
+    .page-link.active {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .buttons a,
+        .buttons button {
+            margin: 0 5px;
+        }
+</style>
+<style>
+    .buttons {
+        display: none;
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+
+<style>
+    .image-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .buttons {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        text-align: center;
+    }
+
+    .movie-item:hover .buttons {
+        display: block;
+    }
+</style>
+<script>
+    function formatDate(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear().toString().slice(2);
+
+        // Đảm bảo các số nhỏ hơn 10 được thêm số 0 phía trước
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+
+        return day + "/" + month + "/" + year;
+    }
+
+    var bookTicketBtns = document.querySelectorAll('.book-ticket-btn');
+
+    bookTicketBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            // Lấy ngày hiện tại
+            var currentDate = formatDate(new Date());
+            // Chuyển hướng đến trang Index của ShowTimeController và truyền tham số ngày hiện tại
+            window.location.href = "/ShowTime/Index?date=" + currentDate;
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_BussinessObjects.Models;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -120,5 +121,63 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public static List<Movie>? GetAllMovies()
+        {
+            List<Movie>? listMovies = null;
+            try
+            {
+                using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+                {
+                    listMovies = context.Movies.Include(i => i.Genre).AsNoTracking().ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return listMovies;
+        }
+
+
+        public static MovieDetailDTO? GetMovieDetail(int movieId)
+        {
+            MovieDetailDTO movieDetail;
+            try
+            {
+                using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+                {
+                     movieDetail =  context.Movies
+                        .Where(m => m.Id == movieId)
+                        .Select(m => new MovieDetailDTO
+                        {
+                            Title = m.Title,
+                            Director = m.Director,
+                            Actors = "",
+                            Genre = m.Genre.Name,
+                            PurchaseTime = m.PurchaseTime ?? DateTime.MinValue,
+                            Length = m.Length ?? 0,
+                            Language = m.Language,
+                            Rated = m.Rated,
+                            Description = m.Description,
+                            Image = m.Image
+                        })
+                        .FirstOrDefault();
+                    string Actors="";
+                  var MovieCasts=  context.MovieCasts.Where(x => x.MovieId == movieId).Include(x => x.Cast);
+                    foreach(var item in MovieCasts)
+                    {
+                        Actors += item.Cast.Name +",";
+                    }
+                    movieDetail.Actors= Actors;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error while getting movie detail: {e.Message}");
+            }
+            return movieDetail;
+        }
+
     }
 }

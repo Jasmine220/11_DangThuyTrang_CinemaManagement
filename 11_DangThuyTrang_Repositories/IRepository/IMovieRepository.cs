@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_BussinessObjects.Models;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_DataAccess.DTO;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace _11_DangThuyTrang_Repositories.IRepository
         void UpdateMovie(UpdateMovieDTO movie);
         List<Movie> GetMovies(string? keyword);
         List<Genre> GetGenres();
+        List<Movie> GetAllMovies();
+        MovieDetailDTO? GetMovieDetail(int movieId);
     }
 }
