@@ -16,11 +16,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             CheckoutApiUrl = "https://localhost:7230/api/Checkout";
         }
-        public async Task<IActionResult> Ticket(int id)
+        public async Task<IActionResult> Ticket(List<int> ids)
         {
-            HttpResponseMessage response = await client.GetAsync(CheckoutApiUrl + "/" + id);
+            HttpResponseMessage response = await client.GetAsync($"{CheckoutApiUrl}?{string.Join("&", ids.Select(id => $"ids={id}"))}");
 
-            Ticket ticket = new Ticket();
+            List<Ticket> tickets = new List<Ticket>();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 string strData = await response.Content.ReadAsStringAsync();
@@ -28,13 +28,13 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                ticket = JsonSerializer.Deserialize<Ticket>(strData, options);
+                tickets = JsonSerializer.Deserialize<List<Ticket>>(strData, options);
             }
             if (HttpContext.Session.GetString("IsLoggedIn") != "true")
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(ticket);
+            return View(tickets);
         }
     }
 }

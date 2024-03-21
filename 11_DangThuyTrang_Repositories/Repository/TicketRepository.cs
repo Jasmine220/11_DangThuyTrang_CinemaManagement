@@ -7,7 +7,8 @@ namespace _11_DangThuyTrang_Repositories.Repository
 {
     public class TicketRepository : ITicketRepository
     {
-        public Ticket GetTicketById(int id) => TicketDAO.GetTicketById(id);
+        public List<Ticket> GetTicketsByListId(List<int> ids) => TicketDAO.GetTicketsByListId(ids);
+
         public StatisticResponse ShowStatistic() => TicketDAO.ShowStatistic(); 
 
     }

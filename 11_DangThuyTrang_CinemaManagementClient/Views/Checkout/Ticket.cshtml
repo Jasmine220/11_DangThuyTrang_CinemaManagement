@@ -1,7 +1,9 @@
-﻿@model _11_DangThuyTrang_BussinessObjects.Models.Ticket
+﻿@model List<_11_DangThuyTrang_BussinessObjects.Models.Ticket>
+
 @{
     ViewData["Title"] = "Ticket";
 }
+
 <style>
     .payment-method-container,
     .ticket-info-container {
@@ -10,7 +12,9 @@
         margin-bottom: 20px;
     }
 </style>
+
 <h1 style="text-align: center; margin-bottom: 50px;">Nhập thông tin/Thanh Toán</h1>
+
 <div class="row">
     <div class="col-md-6">
         <div class="payment-method-container">
@@ -29,28 +33,52 @@
     <div class="col-md-6">
         <div class="ticket-info-container">
             <h2>Thông tin vé</h2>
+            <hr/>
             <div class="ticket-info">
                 <div class="ticket-details">
-                    <h4>@Model.Showroomseat.Showroom.Name - @Model.Showtime.Date?.ToString("dd/MM/yyyy") - Suất Chiếu: @Model.Showtime.StartTime</h4>
-                    <hr />
-                    <div style="overflow: hidden;">
-                        <div style="float: left; margin-right: 10px;">
-                            <p style="font-weight: bold">@Model.Showtime.Movie.Title</p>
-                            <p>@Model.Quantity x ghế @Model.Showroomseat.Type</p>
-                            <p>@Model.Showroomseat.Seat.Name</p>
+                    @foreach (var ticketGroup in Model.GroupBy(ticket => new { ticket.Showtime.Movie.Title, ticket.Showtime.Movie.Image }))
+                    {
+                        var groupTicket = ticketGroup.First();
+                        <div style="overflow: hidden;">
+                            <div style="float: left; margin-right: 10px;">
+                                <h4>@groupTicket.Showtime.Movie.Title</h4>
+                                <img src="@groupTicket.Showtime.Movie.Image" alt="@groupTicket.Showtime.Movie.Title" style="max-width: 100px; max-height: 150px;">
+                            </div>
+                            <div>
+                                <div style="float: right; width: 20%;">
+                                    <div style="margin-bottom: 10px;">
+                                        @{
+                                            var totalQuantity = ticketGroup.Sum(t => t.Quantity);
+                                            var seatType = ticketGroup.First().Showroomseat.Type;
+                                        }
+                                        @if (seatType.ToLower() == "thường")
+                                        {
+                                            <p>@totalQuantity x ghế @seatType</p>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var ticket in ticketGroup)
+                                            {
+                                                <p>@ticket.Quantity x ghế @ticket.Showroomseat.Type</p>
+                                            }
+                                        }
+                                        <p>@string.Join(", ", ticketGroup.Select(t => t.Showroomseat.Seat.Name))</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
-                        <div style="float: right; margin-right: 10px;">
-                            <img src="@Model.Showtime.Movie.Image" alt="@Model.Showtime.Movie.Title" style="max-width: 100px; max-height: 150px;">
-                        </div>
-                    </div>
                         <hr />
-                        <p>Tổng tiền: @Model.TotalPrice?.ToString("N0") VNĐ</p>
-                   
-                    <div style="clear: both;"></div>
+                    }
                 </div>
             </div>
+            @{
+                // Tính tổng tiền của các vé
+                double totalPrice = Model.Sum(ticket => ticket.TotalPrice ?? 0);
+            }
+            <h4>Tổng tiền: @totalPrice.ToString("N0") VNĐ</h4>
             <button class="btn btn-primary">Thanh toán</button>
         </div>
     </div>
-
 </div>

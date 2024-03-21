@@ -28,11 +28,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             ShowTimeApiUrl = "https://localhost:7230/api/ShowTime";
             TicketApiUrl = "https://localhost:7230/api/Ticket";
         }
-        public async Task<IActionResult> Index(int? showroomId, int? showtimeId)
+        public async Task<IActionResult> Index(int? showtimeId, int? roomId)
         {
-            HttpResponseMessage responseShowRoomSeat = await client.GetAsync($"{ShowRoomSeatApiUrl}/?showroomId=1");
-            HttpResponseMessage responseShowRoom = await client.GetAsync($"{ShowRoomApiUrl}/1");
-            HttpResponseMessage responseShowTime = await client.GetAsync($"{ShowTimeApiUrl}/1");
+            HttpResponseMessage responseShowRoomSeat = await client.GetAsync($"{ShowRoomSeatApiUrl}/?showroomId={roomId}");
+            HttpResponseMessage responseShowRoom = await client.GetAsync($"{ShowRoomApiUrl}/{roomId}");
+            HttpResponseMessage responseShowTime = await client.GetAsync($"{ShowTimeApiUrl}/{showtimeId}");
 
             string strDataShowRoomSeat = await responseShowRoomSeat.Content.ReadAsStringAsync();
             string strDataShowRoom = await responseShowRoom.Content.ReadAsStringAsync();

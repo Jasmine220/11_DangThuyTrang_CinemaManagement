@@ -92,14 +92,16 @@
                         button.textContent = startTime;
                         button.onclick = function () {
                             var startTimeId = null;
+                            var roomId = null;
                             if (showTime.movie && showTime.movie.showTimes) {
                                 showTime.movie.showTimes.forEach(time => {
                                     if (time && time.startTime === startTime) {
                                         startTimeId = time.id;
+                                        roomId = time.showroomId;
                                     }
                                 });
                             }
-                            filterByStartTime(startTimeId, startTime);
+                            filterByStartTime(startTimeId, startTime, roomId);
                         };
                         startTimeCell.appendChild(button);
                         if (startTimes.indexOf(startTime) < startTimes.length - 1) {
@@ -123,9 +125,9 @@
     }
 
 
-    function filterByStartTime(showTimeId, startTime) {
+    function filterByStartTime(showTimeId, startTime, roomId) {
         // Chuyển các giá trị showTimeId và startTime sang trang khác
-        window.location.href = `https://localhost:7021/Pages?showTimeId=${showTimeId}`;
+        window.location.href = `https://localhost:7021/Ticket?showTimeId=${showTimeId}&roomId=${roomId}`;
     }
 
     // Event listener for next button

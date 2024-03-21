@@ -5,8 +5,9 @@ namespace _11_DangThuyTrang_Repositories.IRepository
 {
 	public interface ITicketRepository
 	{
-		public Ticket GetTicketById(int id);
-		public StatisticResponse ShowStatistic();
+		public List<Ticket> GetTicketsByListId(List<int> ids);
+
+        public StatisticResponse ShowStatistic();
 
 	}
 }
