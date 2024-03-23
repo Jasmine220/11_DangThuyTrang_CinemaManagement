@@ -5,6 +5,21 @@
 
 <h1>Movies</h1>
 
+<div class="search-container">
+    <form method="get" action="@Url.Action("Index")">
+        <label for="keyword">Title: </label>
+        <input type="text" name="keyword" value="@ViewBag.Keyword" />
+        <button class="btn btn-danger" type="submit">Search</button>
+        <label for="genreId">Genre: </label>
+        <select name="genreId" id="genreId">
+            <option value="">-- All --</option>
+            @foreach (var genre in ViewBag.Genres)
+            {
+                <option value="@genre.Id">@genre.Name</option>
+            }
+        </select>
+    </form>
+</div>
 <div class="movie-grid">
     @foreach (var movie in Model)
     {
@@ -18,7 +33,7 @@
                     <button class="btn btn-danger book-ticket-btn">Đặt vé</button>
                 </div>
 
-                
+
             </div>
             <div class="movie-info">
                 <h4 style="text-align: center;">@movie.Title</h4>
@@ -31,10 +46,11 @@
 </div>
 
 
+
 <style>
     .movie-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, 300px); /* Gán cứng kích thước là 200px */
         grid-gap: 20px;
     }
 
@@ -45,17 +61,19 @@
 
     .movie-image {
         width: 100%;
-        height: 400px; 
-        object-fit: cover; 
-
+        height: 400px;
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+    }
 
     .movie-info {
         margin-top: 10px;
     }
 
-    .movie-info h2 {
-        margin-bottom: 5px;
-    }
+        .movie-info h2 {
+            margin-bottom: 5px;
+        }
 
     .pagination {
         margin-top: 20px;
@@ -84,6 +102,7 @@
     .detail-btn {
         text-decoration: none;
     }
+
     .page-link.active {
         background-color: #007bff;
         color: #fff;
@@ -155,3 +174,4 @@
         });
     });
 </script>
+

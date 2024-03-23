@@ -24,20 +24,42 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> IndexAsync(string? keyword, int? genreId)
         {
-            HttpResponseMessage response = await _client.GetAsync($"{_movieApiUrl}/GetAllMovie");
-            string strData = await response.Content.ReadAsStringAsync();
-            var options = new JsonSerializerOptions
+            string apiUrlMovies = $"{_movieApiUrl}/GetAllMovies?keyword={keyword}&genreId={genreId}";
+            string apiUrlGenres = $"{_movieApiUrl}/GetAllGenre";
+
+            using (var client = new HttpClient())
             {
-                PropertyNameCaseInsensitive = true
-            };
-            List<Movie> listProducts = JsonSerializer.Deserialize<List<Movie>>(strData, options);
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
-            {
-                return RedirectToAction("Index", "Login");
+                HttpResponseMessage responseMovies = await client.GetAsync(apiUrlMovies);
+                if (!responseMovies.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+                string strDataMovies = await responseMovies.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                List<Movie> listMovies = JsonSerializer.Deserialize<List<Movie>>(strDataMovies, options);
+
+                HttpResponseMessage responseGenres = await client.GetAsync(apiUrlGenres);
+                if (!responseGenres.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+                string strDataGenres = await responseGenres.Content.ReadAsStringAsync();
+                List<Genre> listGenres = JsonSerializer.Deserialize<List<Genre>>(strDataGenres, options);
+
+                ViewBag.Genres = listGenres;
+
+                if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+                return View(listMovies);
             }
-            return View(listProducts);
         }
 
         public IActionResult Privacy()

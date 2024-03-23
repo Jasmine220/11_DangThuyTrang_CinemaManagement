@@ -15,12 +15,12 @@ namespace _11_DangThuyTrang_Repositories.Repository
     {
         public void DeleteMovie(Movie p) => MovieDAO.DeleteMovie(p);
 
-        public List<Movie> GetAllMovies() => MovieDAO.GetAllMovies();
+        public List<Movie> GetAllMovies(string? keyword, int? genreId) => MovieDAO.GetAllMovies(keyword, genreId);
 
 
         public List<Genre> GetGenres() => GenreDAO.GetGenres();
 
-		public List<Movie> GetMovies(string? keyword) => MovieDAO.GetMovies(keyword);
+        public List<Movie> GetMovies(string? keyword) => MovieDAO.GetMovies(keyword);
 
         public Movie GetMovietById(int id) => MovieDAO.GetMovieById(id);
 

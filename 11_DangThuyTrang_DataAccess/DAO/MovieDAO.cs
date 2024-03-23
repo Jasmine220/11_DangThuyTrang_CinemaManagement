@@ -122,14 +122,28 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             }
         }
 
-        public static List<Movie>? GetAllMovies()
+        public static List<Movie>? GetAllMovies(string? keyword, int? genreId)
         {
             List<Movie>? listMovies = null;
             try
             {
                 using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
-                    listMovies = context.Movies.Include(i => i.Genre).AsNoTracking().ToList();
+                    IQueryable<Movie> query = context.Movies.Include(i => i.Genre).AsNoTracking();
+
+                    // Áp dụng bộ lọc theo từ khóa (keyword) nếu có
+                    if (!string.IsNullOrWhiteSpace(keyword))
+                    {
+                        query = query.Where(m => m.Title.Contains(keyword));
+                    }
+
+                    // Áp dụng bộ lọc theo thể loại (genreId) nếu có
+                    if (genreId != null)
+                    {
+                        query = query.Where(m => m.GenreId == genreId);
+                    }
+
+                    listMovies = query.ToList();
                 }
             }
             catch (Exception e)
@@ -140,6 +154,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
         }
 
 
+
         public static MovieDetailDTO? GetMovieDetail(int movieId)
         {
             MovieDetailDTO movieDetail;
@@ -147,29 +162,29 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             {
                 using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
-                     movieDetail =  context.Movies
-                        .Where(m => m.Id == movieId)
-                        .Select(m => new MovieDetailDTO
-                        {
-                            Title = m.Title,
-                            Director = m.Director,
-                            Actors = "",
-                            Genre = m.Genre.Name,
-                            PurchaseTime = m.PurchaseTime ?? DateTime.MinValue,
-                            Length = m.Length ?? 0,
-                            Language = m.Language,
-                            Rated = m.Rated,
-                            Description = m.Description,
-                            Image = m.Image
-                        })
-                        .FirstOrDefault();
-                    string Actors="";
-                  var MovieCasts=  context.MovieCasts.Where(x => x.MovieId == movieId).Include(x => x.Cast);
-                    foreach(var item in MovieCasts)
+                    movieDetail = context.Movies
+                       .Where(m => m.Id == movieId)
+                       .Select(m => new MovieDetailDTO
+                       {
+                           Title = m.Title,
+                           Director = m.Director,
+                           Actors = "",
+                           Genre = m.Genre.Name,
+                           PurchaseTime = m.PurchaseTime ?? DateTime.MinValue,
+                           Length = m.Length ?? 0,
+                           Language = m.Language,
+                           Rated = m.Rated,
+                           Description = m.Description,
+                           Image = m.Image
+                       })
+                       .FirstOrDefault();
+                    string Actors = "";
+                    var MovieCasts = context.MovieCasts.Where(x => x.MovieId == movieId).Include(x => x.Cast);
+                    foreach (var item in MovieCasts)
                     {
-                        Actors += item.Cast.Name +",";
+                        Actors += item.Cast.Name + ",";
                     }
-                    movieDetail.Actors= Actors;
+                    movieDetail.Actors = Actors;
                 }
             }
             catch (Exception e)

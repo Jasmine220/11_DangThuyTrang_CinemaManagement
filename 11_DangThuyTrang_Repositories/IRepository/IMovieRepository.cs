@@ -17,7 +17,7 @@ namespace _11_DangThuyTrang_Repositories.IRepository
         void UpdateMovie(UpdateMovieDTO movie);
         List<Movie> GetMovies(string? keyword);
         List<Genre> GetGenres();
-        List<Movie> GetAllMovies();
+        List<Movie> GetAllMovies(string? keyword, int? genreId);
         MovieDetailDTO? GetMovieDetail(int movieId);
     }
 }
