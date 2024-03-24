@@ -6,8 +6,23 @@
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
-<div class="container">
-    <div class="row justify-content-center">
+<style>
+    body {
+        background-image: url('/img/pngtree-background-white-gray-gradient-business-vector-picture-image_1996067.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    /* Custom CSS for centering the card */
+    .centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+</style>
+<div class="container-fluid p-0">
+    <div class="row centered">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">

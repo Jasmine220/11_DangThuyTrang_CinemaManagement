@@ -30,10 +30,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 };
                 tickets = JsonSerializer.Deserialize<List<Ticket>>(strData, options);
             }
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+          /*  if (HttpContext.Session.GetString("IsLoggedIn") != "true")
             {
                 return RedirectToAction("Index", "Login");
-            }
+            }*/
             return View(tickets);
         }
     }

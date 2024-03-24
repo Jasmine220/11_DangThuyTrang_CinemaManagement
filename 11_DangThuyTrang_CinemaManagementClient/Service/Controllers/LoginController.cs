@@ -1,7 +1,10 @@
 ﻿using _11_DangThuyTrang_DataAccess.DAO;
 using _11_DangThuyTrang_DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 {
@@ -31,13 +34,19 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
         public async Task<IActionResult> Index(LoginRequest login)
         {
             HttpResponseMessage response = await client.PostAsJsonAsync(MemberApiUrl, login);
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            if (responseBody.ToLower() == "true")
+            if (response.IsSuccessStatusCode)
             {
-                // Thêm thông tin quyền vào HttpContext
-                HttpContext.Session.SetString("IsLoggedIn", "true");
-                return Redirect("/Home/Index");
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var loginResult = JsonSerializer.Deserialize<(bool IsLoggedIn, int Role)>(responseBody);
+
+                if (loginResult.IsLoggedIn)
+                {
+                    // Thêm thông tin đăng nhập và vai trò vào HttpContext
+                    HttpContext.Session.SetString("IsLoggedIn", "true");
+                    HttpContext.Session.SetString("UserRole", loginResult.Role.ToString());
+
+                    return Redirect("/Home/Index");
+                }
             }
 
             TempData["ErrorMessage"] = "Invalid email or password.";
@@ -46,6 +55,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
         public ActionResult Logout()
         {
             HttpContext.Session.Remove("IsLoggedIn");
+            HttpContext.Session.Remove("UserRole");
             HttpContext.Session.Clear();
             return Redirect("/Login");
         }

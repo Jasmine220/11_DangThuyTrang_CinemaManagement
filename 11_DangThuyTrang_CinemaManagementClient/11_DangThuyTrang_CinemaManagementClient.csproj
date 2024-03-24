@@ -12,4 +12,9 @@
     <ProjectReference Include="..\11_DangThuyTrang_DataAccess\11_DangThuyTrang_DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\360_F_507677881_lwsOUToBTTOk0mHHPhyudfK4BGS9LGO1.jpg" />
+    <None Include="wwwroot\img\pngtree-atmospheric-red-private-cinema-advertising-background-image_940890.jpg" />
+  </ItemGroup>
+
 </Project>

@@ -8,6 +8,6 @@ namespace _11_DangThuyTrang_Repositories.IRepository
 {
     public interface ILoginRepository
     {
-        bool Login(string username, string password);
+        public (bool IsLoggedIn, int RoleId) Login(string username, string password);
     }
 }

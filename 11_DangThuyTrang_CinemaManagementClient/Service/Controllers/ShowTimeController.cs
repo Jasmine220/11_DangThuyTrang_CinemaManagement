@@ -28,10 +28,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 PropertyNameCaseInsensitive = true
             };
             List<ShowTime> listMems = JsonSerializer.Deserialize<List<ShowTime>>(strData, options);
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+          /*  if (HttpContext.Session.GetString("IsLoggedIn") != "true")
             {
                 return RedirectToAction("Index", "Login");
-            }
+            }*/
             return View(listMems);
         }
     }

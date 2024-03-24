@@ -12,6 +12,17 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
         private ILoginRepository repository = new LoginRepository();
 
         [HttpPost]
-        public ActionResult<bool> Login([FromBody] LoginRequest request) => repository.Login(request.Username, request.Password);
+        public ActionResult<(bool IsLoggedIn, int Role)> Login([FromBody] LoginRequest request)
+        {
+            var result = repository.Login(request.Username, request.Password);
+            if (result.IsLoggedIn)
+            {
+                return Ok(result); // Trả về HTTP 200 OK nếu đăng nhập thành công
+            }
+            else
+            {
+                return Unauthorized(); // Trả về HTTP 401 Unauthorized nếu đăng nhập không thành công
+            }
+        }
     }
 }

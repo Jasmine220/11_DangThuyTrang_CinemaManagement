@@ -10,17 +10,25 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 {
     public class LoginDAO
     {
-        public static bool Login(string username, string password)
+        public static (bool IsLoggedIn, int RoleId) Login(string username, string password)
         {
-            bool isLogin = false;
             try
             {
                 using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
-                    var mem = context.Accounts.FirstOrDefault(i => i.Username == username && i.Password == password);
-                    if (mem != null)
+                    var account = context.Accounts
+                        .Include(a => a.IdNavigation.UserRoles)
+                            .ThenInclude(ur => ur.Role)
+                        .FirstOrDefault(a => a.Username == username && a.Password == password);
+
+                    if (account != null && account.IdNavigation != null)
                     {
-                        isLogin = true;
+                        // Lấy quyền của người dùng từ đối tượng User liên quan
+                        var userRole = account.IdNavigation.UserRoles.FirstOrDefault();
+                        if (userRole != null && userRole.Role != null)
+                        {
+                            return (true, userRole.Role.Id);
+                        }
                     }
                 }
             }
@@ -28,7 +36,10 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             {
                 throw new Exception(e.Message);
             }
-            return isLogin;
+
+            // Trả về kết quả không thành công nếu không tìm thấy thông tin tài khoản hoặc vai trò
+            return (false, 0);
         }
     }
 }
+

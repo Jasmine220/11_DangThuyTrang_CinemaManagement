@@ -10,6 +10,7 @@ namespace _11_DangThuyTrang_Repositories.Repository
 {
     public class LoginRepository : ILoginRepository
     {
-        public bool Login(string username, string password) => LoginDAO.Login(username, password);
+        public (bool IsLoggedIn, int RoleId) Login(string username, string password) => LoginDAO.Login(username, password);
+
     }
 }

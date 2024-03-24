@@ -26,6 +26,12 @@
 </table>
 
 <style>
+    body {
+        background-image: url('/img/pngtree-background-white-gray-gradient-business-vector-picture-image_1996067.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
     .date-selection {
         display: flex;
         justify-content: space-between;
@@ -109,14 +115,14 @@
                         }
                     });
                     row.innerHTML = `
-                            <td>
-                                <div>
-                                    <div>${showTime.movie.title}</div>
-                                    <img src="${showTime.movie.image}" alt="${showTime.movie.title}" style="width: 100px;">
-                                </div>
-                            </td>
-                            <td>${showTime.showroom.name}</td>
-                        `;
+                                <td>
+                                    <div>
+                                        <div>${showTime.movie.title}</div>
+                                        <img src="${showTime.movie.image}" alt="${showTime.movie.title}" style="width: 100px;">
+                                    </div>
+                                </td>
+                                <td>${showTime.showroom.name}</td>
+                            `;
                     row.appendChild(startTimeCell);
                     showTimesBody.appendChild(row);
                 });

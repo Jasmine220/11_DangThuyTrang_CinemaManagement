@@ -105,10 +105,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             {
                 ViewData["GenreList"] = genreList;
             }
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+          /*  if (HttpContext.Session.GetString("IsLoggedIn") != "true")
             {
                 return RedirectToAction("Index", "Login");
-            }
+            }*/
             return View(product);
         }
         [HttpPost]
