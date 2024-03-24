@@ -13,7 +13,12 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service
 		{
 			_httpContextAccessor = httpContextAccessor;
 		}
-		public List<Ticket> GetBillFromCookie()
+
+        public BillService()
+        {
+        }
+
+        public List<Ticket> GetBillFromCookie()
 		{
 			var billJson = _httpContextAccessor.HttpContext.Request.Cookies[_billCookieName];
 			if(!string.IsNullOrEmpty(billJson) )

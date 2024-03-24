@@ -12,7 +12,6 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly HttpClient client = null;
-        private readonly BillService _billService;
         private string ShowRoomSeatApiUrl = "";
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
@@ -91,8 +90,9 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 ShowRoomId = showRoom.Id,
                 ShowRoomName = showRoom.Name,
                 ShowRoomSeats = showRoomSeats,
-                ShowTimeId = showtimeId,
+                ShowTimeId = showTime.Id,
             };
+            
             return View(response);
         }
 
@@ -112,6 +112,21 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             //save to view data
             ViewData["TopProducts"] = movieDTOs;
             return View(dailyRevenues);
+        }
+        [HttpPost]
+
+        public async Task<IActionResult> ResponseToCheckout(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
+        {
+
+            var redirectUrl = Url.Action("Ticket", "Checkout", new
+            {
+                showTimeId = showTimeId,
+                showRoomSeatIds = showRoomSeatIds,
+                totalPrice = totalPrice
+            }, protocol: HttpContext.Request.Scheme);
+
+            // Chuyển hướng người dùng đến trang checkout với dữ liệu trên
+            return Redirect(redirectUrl);
         }
 
     }

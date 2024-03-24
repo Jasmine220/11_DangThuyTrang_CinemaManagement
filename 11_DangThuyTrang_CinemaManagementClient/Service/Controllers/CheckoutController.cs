@@ -16,9 +16,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             CheckoutApiUrl = "https://localhost:7230/api/Checkout";
         }
-        public async Task<IActionResult> Ticket(List<int> ids)
+        //[HttpPost]
+        public async Task<IActionResult> Ticket(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
         {
-            HttpResponseMessage response = await client.GetAsync($"{CheckoutApiUrl}?{string.Join("&", ids.Select(id => $"ids={id}"))}");
+
+            HttpResponseMessage response = await client.GetAsync(CheckoutApiUrl + "/" + 1);
 
             List<Ticket> tickets = new List<Ticket>();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
