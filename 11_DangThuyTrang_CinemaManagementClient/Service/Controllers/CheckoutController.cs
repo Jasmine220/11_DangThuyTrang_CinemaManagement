@@ -1,5 +1,4 @@
 ﻿using _11_DangThuyTrang_BussinessObjects.Models;
-using _11_DangThuyTrang_CinemaManagementClient.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -23,7 +22,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 
             HttpResponseMessage response = await client.GetAsync(CheckoutApiUrl + "/" + 1);
 
-            Ticket ticket = new Ticket();
+            List<Ticket> tickets = new List<Ticket>();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 string strData = await response.Content.ReadAsStringAsync();
@@ -31,13 +30,13 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                ticket = JsonSerializer.Deserialize<Ticket>(strData, options);
+                tickets = JsonSerializer.Deserialize<List<Ticket>>(strData, options);
             }
             if (HttpContext.Session.GetString("IsLoggedIn") != "true")
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(ticket);
+            return View(tickets);
         }
     }
 }

@@ -6,27 +6,27 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 {
     public class TicketDAO
     {
-        public static Ticket GetTicketById(int id)
+        public static List<Ticket> GetTicketsByListId(List<int> ids)
         {
-            Ticket? ticket = null;
+            List<Ticket> tickets = new List<Ticket>();
             try
             {
                 using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
-                    ticket = context.Tickets
-                    .Include(st => st.PaymentMethod)
-                    .Include(st => st.Customer)
-                    .Include(st => st.Showroomseat).ThenInclude(st => st.Showroom).ThenInclude(s => s.ShowRoomSeats).ThenInclude(s => s.Seat)
-                    .Include(st => st.Showtime).ThenInclude(st => st.Movie)
-                    .SingleOrDefault(s => s.Id == id);
+                    tickets = context.Tickets
+                        .Include(st => st.PaymentMethod)
+                        .Include(st => st.Customer)
+                        .Include(st => st.Showroomseat).ThenInclude(st => st.Showroom).ThenInclude(s => s.ShowRoomSeats).ThenInclude(s => s.Seat)
+                        .Include(st => st.Showtime).ThenInclude(st => st.Movie)
+                        .Where(ticket => ids.Contains(ticket.Id))
+                        .ToList();
                 }
-
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Error getting ticket by id.", ex);
+                throw new ApplicationException("Error getting tickets by list of ids.", ex);
             }
-            return ticket;
+            return tickets;
         }
 
         public static Ticket CreateTicket(int showtimeId, int paymentMethodId, int showroomseatId)

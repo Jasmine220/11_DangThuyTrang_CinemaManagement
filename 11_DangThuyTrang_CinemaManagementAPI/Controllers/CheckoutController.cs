@@ -9,12 +9,12 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
     public class CheckoutController : Controller
     {
         private ITicketRepository repository = new TicketRepository();
-        [HttpGet("{id}")]
-        public IActionResult GetTicketById(int id)
+        [HttpGet]
+        public IActionResult GetTicketById([FromQuery] List<int> ids)
         {
             try
             {
-                var ticket = repository.GetTicketById(id);
+                var ticket = repository.GetTicketsByListId(ids);
                 return Ok(ticket);
             }
             catch (Exception ex)
