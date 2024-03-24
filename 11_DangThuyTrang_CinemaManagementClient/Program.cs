@@ -9,12 +9,11 @@ builder.Services.AddSession(op =>
     op.Cookie.Name = "IsLoggedIn";
     op.IdleTimeout = TimeSpan.FromMinutes(30);
     op.Cookie.IsEssential = true;
-//Add session to save ticket
-//builder.Services.AddSession();
-//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-//builder.Services.AddScoped<BillService>();
-
 });
+//Add session to save ticket
+builder.Services.AddSession();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<BillService>();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 

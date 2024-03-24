@@ -2,7 +2,10 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Sign Up";
+    var billService = ViewBag.billService;
 }
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -523,72 +526,158 @@
 
             @* <a class="btn-navigate btn-next" href="" title="next">Next</a> *@
             <div class="btn-navigate">
-                <button class="btn btn-success btn-next" onclick="window.location.href='@Url.Action("/checkout")'">Next</button>
+                @* <form action="create-ticket" method="POST">
+                    <input type="hidden" name="showTimeId" value="1">
+                    <input type="hidden" name="showRoomSeatIds" value="1">
+                    <input type="hidden" name="totalPrice" value="1">
+
+                    <button class="btn btn-success btn-next" type="submit" class="btn btn-success">Next</button>
+                </form> *@
+                <button class="btn btn-success btn-next" onclick="createTicketListAndRedirect()">Next</button>
             </div>
+            @Model.ShowTimeId
         </div>
     </div>
+    <script>
+
+
+        function selectSeat(seatId, seatName, priceTicket, type) {
+            console.log("seatId", seatId);
+            console.log("seatName", seatName);
+            console.log("priceTicket", priceTicket);
+            console.log("type", type);
+            var seatListTd = document.getElementById('seat-list');
+            var priceTicketTd = document.getElementById('price-ticket');
+            var totalPriceTd = document.getElementById('total-price');
+            var seat = document.getElementById(seatId);
+
+            var countSeatList = seatListTd.textContent.trim().split(",");
+            var currentValueSeatList = seatListTd.textContent.trim();
+            var currentPriceTicket = priceTicketTd.textContent.trim();
+            var currentTotalTicket = totalPriceTd.textContent.trim();
+            //+ seatName into value of current seat list
+            if ((seat.getAttribute("name") == 1) && !currentValueSeatList.includes(seatName)) {
+                countSeatList.push(seatName);
+                currentValueSeatList = countSeatList.join(",");
+                // currentValueSeatList += (countSeatList.length > 0 ? "," : " ") + seatName;
+            }
+
+            if (seat.getAttribute("name") == -1) {
+                var index = countSeatList.indexOf(seatName);
+                countSeatList.splice(index, 1);
+                currentValueSeatList = countSeatList.join(",");
+            }
+
+            //assign that value into content of tag td has id = seat-list
+            seatListTd.textContent = currentValueSeatList;
+
+            //set value for price-ticket tag
+            if (type == "vip") {
+                priceTicket = priceTicket + 25000;
+            }
+
+            //calculate totalPrice = price-ticket * number of seat
+            var totalPrice = priceTicket * (countSeatList.length - 1);
+
+            if (countSeatList.length - 1 == 0) {
+                priceTicketTd.textContent = "";
+                totalPriceTd.textContent = "";
+            }
+            else {
+                priceTicketTd.textContent = priceTicket;
+                //set value for total-price tag
+                totalPriceTd.textContent = totalPrice.toString();
+            }
+            //reset color and value of name
+            if (seat.getAttribute("name") == 1) {
+                // seat.setAttribute("background-color", "#b11500")
+                seat.style.backgroundColor = "#b11500";
+                seat.setAttribute("name", -1);
+            }
+            else if (seat.getAttribute("name") == -1) {
+                // seat.setAttribute("background-color", "white")
+                seat.style.backgroundColor = "";
+                seat.setAttribute("name", 1);
+            }
+        }
+        // function createTicketListAndRedirect() {
+        //     //get content of tag has id is seat-list
+        //     var showRoomSeatsTag = document.getElementById("seat-list");
+        //     var showRoomSeatIds = showRoomSeatsTag.textContent.trim().split(",");
+        //     var totalPrice = parseFloat(document.getElementById("total-price").textContent.trim());
+        //     var showTimeId = @Model.ShowTimeId;
+        //     console.log("showRoomSeatsTag", showRoomSeatsTag);
+        //     console.log("showRoomSeatIds", showRoomSeatIds);
+        //     console.log("totalPrice", totalPrice);
+        //     var data = {
+        //         showTimeId: showTimeId,
+        //         showRoomSeatIds: showRoomSeatIds,
+        //         totalPrice: totalPrice
+        //     }
+        //     console.log("data", data);
+        //     console.log("JSON.stringify(data)", JSON.stringify(data));
+        //     fetch("../checkout/ticket/1", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify(data)
+        //     })
+        //         .then(function (response) {
+        //             if (response.ok) {
+        //                 // Chuyển hướng nếu request thành công
+        //                 // window.location.href = '../checkout/ticket/1';
+        //                 console.log("fetch", fetch);
+
+        //             } else {
+        //                 // Xử lý trạng thái lỗi, ví dụ: hiển thị thông báo lỗi
+        //                 console.error('Server responded with a non-OK status:', response.status);
+        //             }
+        //         })
+        //         .catch(function (error) {
+        //             console.error('Error:', error);
+        //         });
+
+        // }
+        function createTicketListAndRedirect() {
+            // Lấy thông tin từ các thành phần trên trang
+            var showRoomSeatsTag = document.getElementById("seat-list");
+            var showRoomSeatIds = showRoomSeatsTag.textContent.trim().split(",");
+            var totalPrice = parseFloat(document.getElementById("total-price").textContent.trim());
+            var showTimeId = @Model.ShowTimeId;
+            var customerId = 1;
+
+            // Tạo một form ẩn
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'ResponseToCheckout';
+
+            // Thêm các trường input chứa thông tin cần gửi
+            var inputShowTimeId = document.createElement('input');
+            inputShowTimeId.type = 'hidden';
+            inputShowTimeId.name = 'showTimeId';
+            inputShowTimeId.value = showTimeId;
+            form.appendChild(inputShowTimeId);
+
+            var inputShowRoomSeatIds = document.createElement('input');
+            inputShowRoomSeatIds.type = 'hidden';
+            inputShowRoomSeatIds.name = 'showRoomSeatIds';
+            inputShowRoomSeatIds.value = showRoomSeatIds.join(',');
+            form.appendChild(inputShowRoomSeatIds);
+
+            var inputTotalPrice = document.createElement('input');
+            inputTotalPrice.type = 'hidden';
+            inputTotalPrice.name = 'totalPrice';
+            inputTotalPrice.value = totalPrice;
+            form.appendChild(inputTotalPrice);
+
+            // Thêm form vào body của trang và tự động submit form
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </body>
 </html>
 
-<script>
-    function selectSeat(seatId, seatName, priceTicket, type) {
-        console.log("seatId", seatId);
-        console.log("seatName", seatName);
-        console.log("priceTicket", priceTicket);
-        console.log("type", type);
-        var seatListTd = document.getElementById('seat-list');
-        var priceTicketTd = document.getElementById('price-ticket');
-        var totalPriceTd = document.getElementById('total-price');
-        var seat = document.getElementById(seatId);
 
-        var countSeatList = seatListTd.textContent.trim().split(",");
-        var currentValueSeatList = seatListTd.textContent.trim();
-        var currentPriceTicket = priceTicketTd.textContent.trim();
-        var currentTotalTicket = totalPriceTd.textContent.trim();
-        //+ seatName into value of current seat list
-        if ((seat.getAttribute("name") == 1) && !currentValueSeatList.includes(seatName)) {
-            countSeatList.push(seatName);
-            currentValueSeatList = countSeatList.join(",");
-            // currentValueSeatList += (countSeatList.length > 0 ? "," : " ") + seatName;
-        }
-
-        if (seat.getAttribute("name") == -1) {
-            var index = countSeatList.indexOf(seatName);
-            countSeatList.splice(index, 1);
-            currentValueSeatList = countSeatList.join(",");
-        }
-
-        //assign that value into content of tag td has id = seat-list
-        seatListTd.textContent = currentValueSeatList;
-
-        //set value for price-ticket tag
-        if (type == "vip") {
-            priceTicket = priceTicket + 25000;
-        }
-
-        //calculate totalPrice = price-ticket * number of seat
-        var totalPrice = priceTicket * (countSeatList.length - 1);
-
-        if (countSeatList.length - 1 == 0) {
-            priceTicketTd.textContent = "";
-            totalPriceTd.textContent = "";
-        }
-        else {
-            priceTicketTd.textContent = priceTicket;
-            //set value for total-price tag
-            totalPriceTd.textContent = totalPrice.toString();
-        }
-        //reset color and value of name
-        if (seat.getAttribute("name") == 1) {
-            // seat.setAttribute("background-color", "#b11500")
-            seat.style.backgroundColor = "#b11500";
-            seat.setAttribute("name", -1);
-        }
-        else if (seat.getAttribute("name") == -1) {
-            // seat.setAttribute("background-color", "white")
-            seat.style.backgroundColor = "";
-            seat.setAttribute("name", 1);
-        }
-    }
-</script>
 

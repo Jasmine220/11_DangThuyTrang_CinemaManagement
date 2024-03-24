@@ -2,7 +2,9 @@
 using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_CinemaManagementClient.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Text.Json;
 
 namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
@@ -12,7 +14,6 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly HttpClient client = null;
-        private readonly BillService _billService;
         private string ShowRoomSeatApiUrl = "";
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
@@ -28,6 +29,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             ShowTimeApiUrl = "https://localhost:7230/api/ShowTime";
             TicketApiUrl = "https://localhost:7230/api/Ticket";
         }
+
         public async Task<IActionResult> Index(int? showroomId, int? showtimeId)
         {
             HttpResponseMessage responseShowRoomSeat = await client.GetAsync($"{ShowRoomSeatApiUrl}/?showroomId=1");
@@ -91,8 +93,9 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 ShowRoomId = showRoom.Id,
                 ShowRoomName = showRoom.Name,
                 ShowRoomSeats = showRoomSeats,
-                ShowTimeId = showtimeId,
+                ShowTimeId = showTime.Id,
             };
+            
             return View(response);
         }
 
@@ -112,6 +115,21 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             //save to view data
             ViewData["TopProducts"] = movieDTOs;
             return View(dailyRevenues);
+        }
+        [HttpPost]
+
+        public async Task<IActionResult> ResponseToCheckout(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
+        {
+
+            var redirectUrl = Url.Action("Ticket", "Checkout", new
+            {
+                showTimeId = showTimeId,
+                showRoomSeatIds = showRoomSeatIds,
+                totalPrice = totalPrice
+            }, protocol: HttpContext.Request.Scheme);
+
+            // Chuyển hướng người dùng đến trang checkout với dữ liệu trên
+            return Redirect(redirectUrl);
         }
 
     }
