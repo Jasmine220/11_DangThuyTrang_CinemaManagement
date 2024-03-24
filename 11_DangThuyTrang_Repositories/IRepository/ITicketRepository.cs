@@ -1,13 +1,16 @@
 using _11_DangThuyTrang_BussinessObjects.DTO;
 using _11_DangThuyTrang_BussinessObjects.Models;
+using System.Collections.Generic;
 
 namespace _11_DangThuyTrang_Repositories.IRepository
 {
-	public interface ITicketRepository
-	{
-		public List<Ticket> GetTicketsByListId(List<int> ids);
+    public interface ITicketRepository
+    {
+        List<Ticket> GetTicketsByListId(List<int> ids);
 
-        public StatisticResponse ShowStatistic();
+        StatisticResponse ShowStatistic();
 
-	}
+        List<Ticket> GetTicketsByUserId(int userId);
+        Ticket GetTicketsByTicketId(int userId);
+    }
 }

@@ -17,6 +17,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
         private string TicketApiUrl = "";
+        private List<Ticket> tickets;
         public TicketController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -57,7 +58,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             List<ShowRoomSeat> rowJ = showRoomSeats.Where(s => s.Seat.Name.Contains("J")).ToList();
             List<ShowRoomSeat> rowK = showRoomSeats.Where(s => s.Seat.Name.Contains("K")).ToList();
             List<ShowRoomSeat> rowL = showRoomSeats.Where(s => s.Seat.Name.Contains("L")).ToList();
-            
+
             //display showroomseat by row
             ViewBag.rowA = rowA;
             ViewBag.rowB = rowB;
@@ -113,6 +114,69 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             ViewData["TopProducts"] = movieDTOs;
             return View(dailyRevenues);
         }
+        public async Task<IActionResult> HistoryTicket(int userId)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync($"{TicketApiUrl}/user/{userId}");
 
+                if (response.IsSuccessStatusCode)
+                {
+                    string strData = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
+                    List<Ticket> tickets = JsonSerializer.Deserialize<List<Ticket>>(strData, options);
+
+                    return View(tickets);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to retrieve tickets for the user.");
+                    return View("Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                return View("Error");
+            }
+        }
+
+        public async Task<IActionResult> HistoryTicketDetails(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync($"{TicketApiUrl}/detail/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string strData = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
+                    Ticket tickets = JsonSerializer.Deserialize<Ticket>(strData, options);
+
+
+                    
+
+
+
+                    return View(tickets);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to retrieve tickets for the user.");
+                    return View("Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                return View("Error");
+            }
+        }
     }
 }

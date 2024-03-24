@@ -136,6 +136,53 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 
         }
 
+        public static List<Ticket> GetTicketsByUserId(int userId)
+        {
+            try
+            {
+                using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+                {
+                    var tickets = context.Tickets
+                        .Include(ticket => ticket.Customer)
+                        .Include(ticket => ticket.PaymentMethod)
+                        .Include(ticket => ticket.Showroomseat).ThenInclude(showroomseat => showroomseat.Seat)
+                        .Include(ticket => ticket.Showroomseat).ThenInclude(showroomseat => showroomseat.Showroom)
+                        .Include(ticket => ticket.Showtime).ThenInclude(showtime => showtime.Movie)
+                        .Where(ticket => ticket.CustomerId == userId)
+                        .ToList();
+
+                    return tickets;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error getting tickets by user id including all foreign keys.", ex);
+            }
+        }
+
+        public static Ticket GetTicketByTicketId(int ticketId)
+        {
+            try
+            {
+                using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+                {
+                    var ticket = context.Tickets
+                        .Include(ticket => ticket.Customer)
+                        .Include(ticket => ticket.PaymentMethod)
+                        .Include(ticket => ticket.Showroomseat).ThenInclude(showroomseat => showroomseat.Seat)
+                        .Include(ticket => ticket.Showroomseat).ThenInclude(showroomseat => showroomseat.Showroom)
+                        .Include(ticket => ticket.Showtime).ThenInclude(showtime => showtime.Movie)
+                        .FirstOrDefault(ticket => ticket.Id == ticketId);
+
+                    return ticket;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error getting ticket by ticket ID including all foreign keys.", ex);
+            }
+        }
+
     }
 
 }
