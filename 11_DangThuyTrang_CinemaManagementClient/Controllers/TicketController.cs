@@ -1,11 +1,10 @@
-﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO.Response;
 using _11_DangThuyTrang_BussinessObjects.Models;
-using _11_DangThuyTrang_CinemaManagementClient.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
+namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 {
     public class TicketController : Controller
     {
@@ -110,7 +109,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 PropertyNameCaseInsensitive = true,
             };
             StatisticResponse statisticResponse = JsonSerializer.Deserialize<StatisticResponse>(strData, options);
-            List<MovieDTO> movieDTOs = statisticResponse.MovieDTOs;
+            List<MovieResponse> movieDTOs = statisticResponse.MovieDTOs;
             List<DailyRevenue> dailyRevenues = statisticResponse.DailyRevenues;
 
             //save to view data

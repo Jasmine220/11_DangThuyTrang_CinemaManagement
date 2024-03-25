@@ -1,8 +1,7 @@
-﻿using _11_DangThuyTrang_BussinessObjects.Models;
-using _11_DangThuyTrang_BussinessObjects.DTO;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO.Response;
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_DataAccess.DAO;
 using _11_DangThuyTrang_Repositories.IRepository;
-using System.Collections.Generic;
 
 namespace _11_DangThuyTrang_Repositories.Repository
 {

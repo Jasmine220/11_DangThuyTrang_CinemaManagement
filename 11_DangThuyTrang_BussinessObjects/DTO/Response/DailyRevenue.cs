@@ -1,4 +1,4 @@
-﻿namespace _11_DangThuyTrang_BussinessObjects.Models
+﻿namespace _11_DangThuyTrang_BussinessObjects.DTO.Response
 {
     public class DailyRevenue
     {

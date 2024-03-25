@@ -1,4 +1,4 @@
-﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO.Response;
 using _11_DangThuyTrang_BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -148,10 +148,10 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                     .ToList();
                 var result = topSaledMovies.Join(movieNames, tp => tp.MovieId, p => p.Id, (tp, p) => new { tp.MovieId, p.Title, tp.Sale }).ToList();
 
-                List<MovieDTO> moviesDTO = new List<MovieDTO>();
+                List<MovieResponse> moviesDTO = new List<MovieResponse>();
                 foreach (var movie in result)
                 {
-                    moviesDTO.Add(new MovieDTO
+                    moviesDTO.Add(new MovieResponse
                     {
                         MovieId = (int)movie.MovieId,
                         Title = movie.Title,

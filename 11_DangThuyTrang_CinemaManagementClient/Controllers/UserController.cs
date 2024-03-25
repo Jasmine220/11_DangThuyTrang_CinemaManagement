@@ -1,12 +1,7 @@
 ﻿using _11_DangThuyTrang_BussinessObjects.Models;
-using _11_DangThuyTrang_CinemaManagementClient.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Net.Http.Headers;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using System.Text.Json;
-using _11_DangThuyTrang_BussinessObjects.DTO;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 {

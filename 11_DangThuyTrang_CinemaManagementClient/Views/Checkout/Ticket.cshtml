@@ -87,3 +87,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function payment() {
+        var amount = document.getElementById("total-price").textContent.trim();
+        console.log("Amount ", amount);
+
+        // Tạo URL với các tham số truyền vào
+        var url = "/Checkout/ResponseToPayment";
+        url += "?OrderType=a";
+        url += "&Amount=" + encodeURIComponent(amount); // Đảm bảo escape các ký tự đặc biệt trong URL
+        url += "&OrderDescription=b";
+        url += "&Name=Trang";
+
+        // Chuyển hướng người dùng đến trang thanh toán
+        window.location.href = url;
+    }
+</script>
