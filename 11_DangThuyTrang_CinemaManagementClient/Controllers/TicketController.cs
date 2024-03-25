@@ -1,6 +1,5 @@
 ﻿using _11_DangThuyTrang_BussinessObjects.DTO.Response;
 using _11_DangThuyTrang_BussinessObjects.Models;
-using _11_DangThuyTrang_CinemaManagementClient.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -12,7 +11,6 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
         private readonly IConfiguration _configuration;
 
         private readonly HttpClient client = null;
-        private readonly BillService _billService;
         private string ShowRoomSeatApiUrl = "";
         private string ShowRoomApiUrl = "";
         private string ShowTimeApiUrl = "";
@@ -113,6 +111,5 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             ViewData["TopProducts"] = movieDTOs;
             return View(dailyRevenues);
         }
-
     }
 }

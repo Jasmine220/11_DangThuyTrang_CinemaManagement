@@ -1,4 +1,3 @@
-using _11_DangThuyTrang_CinemaManagementClient.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 

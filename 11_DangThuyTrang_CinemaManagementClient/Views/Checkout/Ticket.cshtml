@@ -44,13 +44,30 @@
                         </div>
                     </div>
                         <hr />
-                        <p>Tổng tiền: @Model.TotalPrice?.ToString("N0") VNĐ</p>
+                    <p>Tổng tiền: <span id="total-price">@Model.TotalPrice?.ToString("N0")</span> VNĐ</p>
                    
                     <div style="clear: both;"></div>
                 </div>
             </div>
-            <button class="btn btn-primary" >Thanh toán</button>
+            <button class="btn btn-primary" onclick="payment()">Thanh toán</button>
         </div>
     </div>
 
 </div>
+
+<script>
+    function payment() {
+        var amount = document.getElementById("total-price").textContent.trim();
+        console.log("Amount ", amount);
+
+        // Tạo URL với các tham số truyền vào
+        var url = "/Checkout/ResponseToPayment";
+        url += "?OrderType=a";
+        url += "&Amount=" + encodeURIComponent(amount); // Đảm bảo escape các ký tự đặc biệt trong URL
+        url += "&OrderDescription=b";
+        url += "&Name=Trang";
+
+        // Chuyển hướng người dùng đến trang thanh toán
+        window.location.href = url;
+    }
+</script>
