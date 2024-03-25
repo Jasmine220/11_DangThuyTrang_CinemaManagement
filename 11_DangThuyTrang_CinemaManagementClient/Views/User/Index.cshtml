@@ -1,0 +1,46 @@
+﻿@model IEnumerable<_11_DangThuyTrang_BussinessObjects.Models.User>
+
+<h1 style="text-align:center">User Management</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Active/Inactive</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                <td>@user.Address</td>
+                <td>@user.Phone</td>
+                <td>
+                    @(user.Status.HasValue ? (user.Status.Value ? "Active" : "Inactive") : "Unknown")
+                </td>
+                <td>
+                    <form asp-controller="User" asp-action="UpdateStatus" method="post">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        @if (user.Status.HasValue && !user.Status.Value)
+                        {
+                            <input type="hidden" name="newStatus" value="true" />
+                            <button type="submit" class="btn btn-warning">Active</button>
+                        }
+                        else
+                        {
+                            <input type="hidden" name="newStatus" value="false" />
+                            <button type="submit" class="btn btn-danger">Inactive</button>
+                        }
+                    </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

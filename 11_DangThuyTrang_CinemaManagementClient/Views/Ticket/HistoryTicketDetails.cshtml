@@ -1,0 +1,27 @@
+﻿@model _11_DangThuyTrang_BussinessObjects.Models.Ticket
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Ticket Details</title>
+</head>
+<body>
+    <h1>Ticket Details</h1>
+
+    <div>
+        <h4>ID: @Model.Id</h4>
+        <h4>Created Time: @Model.CreatedTime.ToString("dd/MM/yyyy HH:mm:ss")</h4>
+        <h4>Quantity: @Model.Quantity</h4>
+        <h4>Price: @string.Format("{0:N0}", Model.TotalPrice)</h4>
+        <h4>Payment Method: @Model.PaymentMethod.Name</h4>
+        <h4>Showroom: @Model.Showroomseat.Showroom.Name</h4>
+        <h4>Seats:@Model.Showroomseat.Seat.Name</h4>
+        <h4>Type:@Model.Showroomseat.Type</h4>
+           
+                
+            
+        
+    </div>
+</body>
+</html>
