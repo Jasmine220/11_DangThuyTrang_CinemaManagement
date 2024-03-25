@@ -26,7 +26,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 			};
 			List<Movie> listProducts = JsonSerializer.Deserialize<List<Movie>>(strData, options);
 			ViewBag.Keyword = keyword;
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "1")
             {
                 return RedirectToAction("Index", "Login");
             }

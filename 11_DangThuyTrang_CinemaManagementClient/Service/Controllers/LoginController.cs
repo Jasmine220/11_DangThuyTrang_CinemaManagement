@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_DataAccess.DAO;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_DataAccess.DAO;
 using _11_DangThuyTrang_DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
@@ -37,13 +38,18 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var loginResult = JsonSerializer.Deserialize<(bool IsLoggedIn, int RoleId)>(responseBody);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var loginResult = JsonSerializer.Deserialize<LoginResponse>(responseBody, options);
 
                 if (loginResult.IsLoggedIn)
                 {
                     // Thêm thông tin đăng nhập và vai trò vào HttpContext
                     HttpContext.Session.SetString("IsLoggedIn", "true");
-                    HttpContext.Session.SetString("UserRole", loginResult.RoleId.ToString());
+                    HttpContext.Session.SetString("UserRole", loginResult.Role.ToString());
+                    HttpContext.Session.SetInt32("UserId", loginResult.UserId);
 
                     return Redirect("/Home/Index");
                 }

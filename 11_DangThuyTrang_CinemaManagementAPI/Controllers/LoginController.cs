@@ -15,7 +15,7 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            var result = repository.Login(request.Username, request.Password);
+            var result = repository.Login(request);
             
 
             if (result.IsLoggedIn)
@@ -24,6 +24,7 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
                 {
                     IsLoggedIn = result.IsLoggedIn,
                     Role = result.RoleId,
+                    UserId = result.UserId,
                 };
                 return Ok(response); // Trả về HTTP 200 OK nếu đăng nhập thành công
             }

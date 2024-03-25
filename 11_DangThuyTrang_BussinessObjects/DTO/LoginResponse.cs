@@ -10,5 +10,6 @@ namespace _11_DangThuyTrang_BussinessObjects.DTO
     {
         public bool IsLoggedIn { get; set; }
         public int Role { get; set; }
+        public int UserId { get; set; }
     }
 }

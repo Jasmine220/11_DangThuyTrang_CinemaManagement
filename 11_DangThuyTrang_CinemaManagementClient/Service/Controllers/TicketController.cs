@@ -92,7 +92,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                 ShowRoomSeats = showRoomSeats,
                 ShowTimeId = showTime.Id,
             };
-            
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "2")
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View(response);
         }
 
@@ -111,18 +114,23 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
 
             //save to view data
             ViewData["TopProducts"] = movieDTOs;
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "1")
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View(dailyRevenues);
         }
         [HttpPost]
 
-        public async Task<IActionResult> ResponseToCheckout(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
+        public async Task<IActionResult> ResponseToCheckout(int showTimeId, string[] showRoomSeatIds, decimal totalPrice, int showRoomId)
         {
 
             var redirectUrl = Url.Action("CreateTicket", "Checkout", new
             {
                 showTimeId = showTimeId,
                 showRoomSeatIds = showRoomSeatIds,
-                totalPrice = totalPrice
+                totalPrice = totalPrice,
+                showRoomId = showRoomId
             }, protocol: HttpContext.Request.Scheme);
 
             // Chuyển hướng người dùng đến trang checkout với dữ liệu trên

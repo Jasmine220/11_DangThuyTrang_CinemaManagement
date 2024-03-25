@@ -1,6 +1,7 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     bool isLoggedIn = HttpContextAccessor.HttpContext.Session.GetString("IsLoggedIn") == "true";
+    bool RoleId = HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "1";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -28,12 +29,19 @@
                         </li>
                         @if (isLoggedIn)
                         {
+                            @if (RoleId)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="MovieManagement" asp-action="Index">Movie Management</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Statistic">Statistics</a>
+                                </li>
+                            } else{
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="ShowTime" asp-action="Index">Show Time</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="MovieManagement" asp-action="Index">Movie Management</a>
-                            </li>
+                            }
                         }
                     </ul>
                     <ul class="navbar-nav ml-auto">

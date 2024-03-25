@@ -29,45 +29,77 @@ namespace _11_DangThuyTrang_DataAccess.DAO
             return tickets;
         }
 
-        public static Ticket CreateTicket(int showtimeId, int paymentMethodId, int showroomseatId)
+        public static List<int> CreateTicket(int showtimeId, int paymentMethodId, string showroomseatIds, int customerId, int showRoomId)
         {
-            using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+            List<int> ticketIds = new List<int>();
+
+            try
             {
-                var showTime = ShowtimeDAO.GetShowTimeById(showtimeId);
-                var showRoomSeat = ShowRoomSeatDAO.GetShowRoomSeatById(showroomseatId);
-                var paymentMethod = PaymentMethodDAO.GetPaymentMethodById(paymentMethodId);
-                if (showTime == null)
+                using (var context = new _11_DangThuyTrang_CinemaManagementContext())
                 {
-                    throw new ApplicationException("Show time not found.");
+                    var showTime = ShowtimeDAO.GetShowTimeById(showtimeId);
+                    var paymentMethod = PaymentMethodDAO.GetPaymentMethodById(paymentMethodId);
+                    if (showTime == null)
+                    {
+                        throw new ApplicationException("Show time not found.");
+                    }
+
+                    var seatNames = showroomseatIds.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var seatName in seatNames)
+                    {
+                        var seat = context.Seats.FirstOrDefault(s => s.Name == seatName);
+                        if (seat == null)
+                        {
+                            throw new ApplicationException($"Seat with name {seatName} not found.");
+                        }
+                        // Lấy ShowRoomSeat dựa trên Id của ghế
+                        var showRoomSeat = ShowRoomSeatDAO.GetShowRoomSeatById(seat.Id, showRoomId);
+                        if (showRoomSeat == null)
+                        {
+                            throw new ApplicationException($"Show room seat with ID {seat.Id} not found.");
+                        }
+
+                        double totalPrice = (double)showTime.Movie.PriceTicket;
+                        if (showRoomSeat.Type != null && showRoomSeat.Type.Equals("vip", StringComparison.OrdinalIgnoreCase))
+                        {
+                            totalPrice += 25000;
+                        }
+
+                        var ticket = new Ticket
+                        {
+                            TotalPrice = totalPrice,
+                            CustomerId = customerId,
+                            CreatedTime = DateTime.Now,
+                            Quantity = 1,
+                            ShowtimeId = showtimeId,
+                            PaymentMethodId = null,
+                            ShowroomseatId = showRoomSeat.ShowroomseatId,
+                        };
+
+                        context.Tickets.Add(ticket);
+                        context.SaveChanges();
+
+                        // Add the newly created ticket ID to the list
+                        ticketIds.Add(ticket.Id);
+                    }
+
+                    // Update seat status after creating tickets
+                    foreach (var seatName in seatNames)
+                    {
+                        var seat = context.Seats.FirstOrDefault(s => s.Name == seatName);
+                        var showRoomSeat = ShowRoomSeatDAO.GetShowRoomSeatById(seat.Id, showRoomId);
+                        if (seat != null)
+                        {
+                            ShowRoomSeatDAO.UpdateSeatStatus(showRoomSeat.ShowroomseatId);
+                        }
+                    }
                 }
-                if (showRoomSeat == null)
-                {
-                    throw new ApplicationException("Show room seat not found.");
-                }
-                if (paymentMethod == null)
-                {
-                    throw new ApplicationException("Payment method not found.");
-                }
-                double totalPrice = (double)showTime.Movie.PriceTicket;
-                if (showRoomSeat.Type != null && showRoomSeat.Type.Equals("vip"))
-                {
-                    totalPrice += 25000;
-                }
-                var ticket = new Ticket
-                {
-                    TotalPrice = totalPrice,
-                    CustomerId = 1,
-                    CreatedTime = new DateTime(),
-                    Quantity = 1,
-                    ShowtimeId = showtimeId,
-                    PaymentMethodId = paymentMethodId,
-                    PaymentMethod = paymentMethod,
-                    ShowroomseatId = showroomseatId,
-                    Showroomseat = showRoomSeat,
-                };
-                context.Tickets.Add(ticket);
-                context.SaveChanges();
-                return ticket;
+
+                return ticketIds;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error creating ticket.", ex);
             }
         }
 

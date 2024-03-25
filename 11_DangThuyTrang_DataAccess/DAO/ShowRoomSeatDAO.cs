@@ -32,17 +32,17 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 			return showRoomSeats;
 		}
 
-		public static ShowRoomSeat GetShowRoomSeatById(int showRoomSeatId)
+		public static ShowRoomSeat GetShowRoomSeatById(int showRoomSeatId, int showRoomId)
 		{
 			ShowRoomSeat? showRoomSeat = null;
 			try
 			{
-				using(var context = new _11_DangThuyTrang_CinemaManagementContext())
+				using (var context = new _11_DangThuyTrang_CinemaManagementContext())
 				{
-					showRoomSeat = context.ShowRoomSeats.FirstOrDefault(s => s.ShowroomseatId == showRoomSeatId);
+					showRoomSeat = context.ShowRoomSeats.FirstOrDefault(s => s.SeatId == showRoomSeatId && s.ShowroomId == showRoomId);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw new ApplicationException("Error getting show room seat", ex);
 			}
@@ -57,21 +57,44 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 				using (var context = new _11_DangThuyTrang_CinemaManagementContext())
 				{
 					showRoomSeats = context.ShowRoomSeats.Where(s => seatIds.ToList().Contains((int)s.SeatId) && s.ShowroomId == showroomId).ToList();
-					if(showRoomSeats.Count == 0)
+					if (showRoomSeats.Count == 0)
 					{
-				
+
 						throw new ApplicationException("Seats not found");
 					}
-					foreach(var seat in showRoomSeats)
+					foreach (var seat in showRoomSeats)
 					{
 						seat.Status = true;
 					}
 					context.ShowRoomSeats.UpdateRange(showRoomSeats);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw new ApplicationException("Error update show room seats.", ex);
+			}
+		}
+		public static void UpdateSeatStatus(int showRoomSeatId)
+		{
+			try
+			{
+				using (var context = new _11_DangThuyTrang_CinemaManagementContext())
+				{
+					var showRoomSeat = context.ShowRoomSeats.FirstOrDefault(s => s.ShowroomseatId == showRoomSeatId);
+					if (showRoomSeat != null)
+					{
+						showRoomSeat.Status = true;
+						context.SaveChanges();
+					}
+					else
+					{
+						throw new ApplicationException($"Show room seat with ID {showRoomSeatId} not found.");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new ApplicationException("Error updating show room seat status.", ex);
 			}
 		}
 	}

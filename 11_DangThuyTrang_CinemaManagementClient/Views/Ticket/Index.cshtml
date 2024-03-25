@@ -324,29 +324,7 @@
                             }
                         }
                     }
-                </div>
-
-                <div class="row">
-                    @foreach (var showRoomSeat in ViewBag.rowG)
-                    {
-                        if (showRoomSeat.Status)
-                        {
-                            <input type="button" name="1" disabled class="seat seat-disable" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket, '@showRoomSeat.Type')" />
-                        }
-                        else
-                        {
-                            if (showRoomSeat.Type == "vip")
-                            {
-                                <input type="button" name="1" class="seat seat-vip" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket, '@showRoomSeat.Type')" />
-                            }
-                            else
-                            {
-                                <input type="button" name="1" class="seat seat-active" id="@showRoomSeat.Seat.Id" value="@showRoomSeat.Seat.Name" onclick="selectSeat(@showRoomSeat.Seat.Id, '@showRoomSeat.Seat.Name', @Model.PriceTicket, '@showRoomSeat.Type')" />
-                            }
-                        }
-                    }
-                </div>
-
+				</div>
                 <div class="row">
                     @foreach (var showRoomSeat in ViewBag.rowH)
                     {
@@ -645,12 +623,13 @@
             var showRoomSeatIds = showRoomSeatsTag.textContent.trim().split(",");
             var totalPrice = parseFloat(document.getElementById("total-price").textContent.trim());
             var showTimeId = @Model.ShowTimeId;
+            var showRoomId = @Model.ShowRoomId;
             var customerId = 1;
 
             // Tạo một form ẩn
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'ResponseToCheckout';
+            form.action = '/Checkout/CreateTicket';
 
             // Thêm các trường input chứa thông tin cần gửi
             var inputShowTimeId = document.createElement('input');
@@ -671,6 +650,11 @@
             inputTotalPrice.value = totalPrice;
             form.appendChild(inputTotalPrice);
 
+            var inputShowRoomId = document.createElement('input');
+            inputShowRoomId.type = 'hidden';
+            inputShowRoomId.name = 'showRoomId';
+            inputShowRoomId.value = showRoomId;
+            form.appendChild(inputShowRoomId);
             // Thêm form vào body của trang và tự động submit form
             document.body.appendChild(form);
             form.submit();
