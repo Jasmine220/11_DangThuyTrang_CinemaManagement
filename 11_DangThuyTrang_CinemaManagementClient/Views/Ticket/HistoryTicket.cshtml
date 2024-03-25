@@ -38,7 +38,21 @@
                         <td>@ticket.CreatedTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
                         <td>@ticket.Quantity</td>
                         <td>@string.Format("{0:N0}", ticket.TotalPrice)</td>
-                        <td>@ticket.PaymentMethod?.Name</td>
+                   
+                            @if (ticket.PaymentMethod != null)
+                            {
+                            <td>
+                                @ticket.PaymentMethod.Name
+                                </td>
+                            
+                            }
+                            else
+                            {
+                                  <td>
+                                Chưa thanh toán
+                            </td>
+                            }
+                     
                         <td>@ticket.Showroomseat.Showroom.Name</td>
                         <td><a type="button" class="btn btn-primary" href="@Url.Action("HistoryTicketDetails", "Ticket", new { id = ticket.Id })">Details</a></td>
                     </tr>

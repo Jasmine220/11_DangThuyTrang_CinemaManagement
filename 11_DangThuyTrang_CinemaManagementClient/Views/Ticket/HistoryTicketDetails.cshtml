@@ -21,7 +21,21 @@
         <h4>Created Time: @Model.CreatedTime.ToString("dd/MM/yyyy HH:mm:ss")</h4>
         <h4>Quantity: @Model.Quantity</h4>
         <h4>Price: @string.Format("{0:N0}", Model.TotalPrice)</h4>
-        <h4>Payment Method: @Model.PaymentMethod?.Name</h4>
+    
+          
+            @if (Model.PaymentMethod != null)
+            {
+            <h4>
+                Payment Method: @Model.PaymentMethod.Name
+            </h4>
+            }
+            else
+            {
+              <h4>
+                Payment Method: Chưa thanh toán
+            </h4>
+            }
+    
         <h4>Showroom: @Model.Showroomseat.Showroom.Name</h4>
         <h4>Seats:@Model.Showroomseat.Seat.Name</h4>
         <h4>Type:@Model.Showroomseat.Type</h4>
