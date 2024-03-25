@@ -1,4 +1,5 @@
-﻿using _11_DangThuyTrang_DataAccess.DTO;
+﻿using _11_DangThuyTrang_BussinessObjects.DTO;
+using _11_DangThuyTrang_DataAccess.DTO;
 using _11_DangThuyTrang_Repositories.IRepository;
 using _11_DangThuyTrang_Repositories.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,19 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
         private ILoginRepository repository = new LoginRepository();
 
         [HttpPost]
-        public ActionResult<(bool IsLoggedIn, int Role)> Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] LoginRequest request)
         {
             var result = repository.Login(request.Username, request.Password);
+            
+
             if (result.IsLoggedIn)
             {
-                return Ok(result); // Trả về HTTP 200 OK nếu đăng nhập thành công
+                LoginResponse response = new LoginResponse
+                {
+                    IsLoggedIn = result.IsLoggedIn,
+                    Role = result.RoleId,
+                };
+                return Ok(response); // Trả về HTTP 200 OK nếu đăng nhập thành công
             }
             else
             {

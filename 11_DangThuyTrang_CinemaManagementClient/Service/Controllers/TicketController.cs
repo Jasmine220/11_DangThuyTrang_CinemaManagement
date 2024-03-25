@@ -118,7 +118,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
         public async Task<IActionResult> ResponseToCheckout(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
         {
 
-            var redirectUrl = Url.Action("Ticket", "Checkout", new
+            var redirectUrl = Url.Action("CreateTicket", "Checkout", new
             {
                 showTimeId = showTimeId,
                 showRoomSeatIds = showRoomSeatIds,

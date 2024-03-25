@@ -16,8 +16,8 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             CheckoutApiUrl = "https://localhost:7230/api/Checkout";
         }
-        //[HttpPost]
-        public async Task<IActionResult> Ticket(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
+        [HttpPost]
+        public async Task<IActionResult> CreateTicket(int showTimeId, string[] showRoomSeatIds, decimal totalPrice)
         {
 
             HttpResponseMessage response = await client.GetAsync(CheckoutApiUrl + "/" + 1);
@@ -38,5 +38,8 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             }*/
             return View(tickets);
         }
+
+
+
     }
 }

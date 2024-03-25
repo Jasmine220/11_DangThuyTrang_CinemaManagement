@@ -19,9 +19,19 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ShowTimeApiUrl = "https://localhost:7230/api/ShowTime";
         }
-        public async Task<IActionResult> Index(DateTime date)
+        public async Task<IActionResult> Index(DateTime? date)
         {
-            HttpResponseMessage response = await client.GetAsync(ShowTimeApiUrl + "/bydate?date=" + date);
+            HttpResponseMessage response;
+            if (date == null)
+            {
+                response = await client.GetAsync(ShowTimeApiUrl + "/bydate");
+
+            }
+            else
+            {
+                response = await client.GetAsync(ShowTimeApiUrl + "/bydate?date=" + date);
+            }
+
             string strData = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
