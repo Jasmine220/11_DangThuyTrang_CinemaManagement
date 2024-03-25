@@ -16,7 +16,7 @@
 <body>
     <h1>User's Ticket List</h1>
 
-    @if (Model != null && Model.Any())
+    @if (@Model != null && @Model.Any())
     {
         <table class="table table-bordered">
             <thead>
@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var ticket in Model)
+                @foreach (var ticket in @Model)
                 {
                     <tr>
                         <td>@ticket.Id</td>
