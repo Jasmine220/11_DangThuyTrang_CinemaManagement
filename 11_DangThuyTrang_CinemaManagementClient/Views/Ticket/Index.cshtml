@@ -583,45 +583,7 @@
                 seat.setAttribute("name", 1);
             }
         }
-        // function createTicketListAndRedirect() {
-        //     //get content of tag has id is seat-list
-        //     var showRoomSeatsTag = document.getElementById("seat-list");
-        //     var showRoomSeatIds = showRoomSeatsTag.textContent.trim().split(",");
-        //     var totalPrice = parseFloat(document.getElementById("total-price").textContent.trim());
-        //     var showTimeId = @Model.ShowTimeId;
-        //     console.log("showRoomSeatsTag", showRoomSeatsTag);
-        //     console.log("showRoomSeatIds", showRoomSeatIds);
-        //     console.log("totalPrice", totalPrice);
-        //     var data = {
-        //         showTimeId: showTimeId,
-        //         showRoomSeatIds: showRoomSeatIds,
-        //         totalPrice: totalPrice
-        //     }
-        //     console.log("data", data);
-        //     console.log("JSON.stringify(data)", JSON.stringify(data));
-        //     fetch("../checkout/ticket/1", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify(data)
-        //     })
-        //         .then(function (response) {
-        //             if (response.ok) {
-        //                 // Chuyển hướng nếu request thành công
-        //                 // window.location.href = '../checkout/ticket/1';
-        //                 console.log("fetch", fetch);
-
-        //             } else {
-        //                 // Xử lý trạng thái lỗi, ví dụ: hiển thị thông báo lỗi
-        //                 console.error('Server responded with a non-OK status:', response.status);
-        //             }
-        //         })
-        //         .catch(function (error) {
-        //             console.error('Error:', error);
-        //         });
-
-        // }
+        
         function createTicketListAndRedirect() {
             // Lấy thông tin từ các thành phần trên trang
             var showRoomSeatsTag = document.getElementById("seat-list");

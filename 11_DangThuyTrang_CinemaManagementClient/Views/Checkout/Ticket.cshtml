@@ -83,7 +83,52 @@
                 double totalPrice = Model.Sum(ticket => ticket.TotalPrice ?? 0);
             }
             <h4>Tổng tiền: @totalPrice.ToString("N0") VNĐ</h4>
-            <button class="btn btn-primary">Thanh toán</button>
+            <button class="btn btn-primary" onclick="payment(@totalPrice)">Thanh toán</button>
         </div>
     </div>
 </div>
+
+<script>
+
+    function payment(totalPrice) {
+        console.log("Amount ", totalPrice)
+        // Tạo một form ẩn
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/Payment/CreatePayment';
+
+        // Thêm các trường input chứa thông tin cần gửi
+        var inputOrderType = document.createElement('input');
+        inputOrderType.type = 'hidden';
+        inputOrderType.name = 'orderType';
+        inputOrderType.value = "a";
+        form.appendChild(inputOrderType);
+        console.log("inputOrderType ", inputOrderType)
+
+        var inputAmount = document.createElement('input');
+        inputAmount.type = 'hidden';
+        inputAmount.name = 'amount';
+        inputAmount.value = totalPrice;
+        form.appendChild(inputAmount);
+        console.log("inputAmount ", inputAmount)
+
+        var inputOrderDescription = document.createElement('input');
+        inputOrderDescription.type = 'hidden';
+        inputOrderDescription.name = 'orderDescription';
+        inputOrderDescription.value = "bbbb";
+        form.appendChild(inputOrderDescription);
+        console.log("inputOrderDescription ", inputOrderDescription)
+
+        var inputName = document.createElement('input');
+        inputName.type = 'hidden';
+        inputName.name = 'name';
+        inputName.value = "TRANG";
+
+        form.appendChild(inputName);
+        // Thêm form vào body của trang và tự động submit form
+        document.body.appendChild(form);
+        console.log("form ", form)
+
+        form.submit();
+    }
+</script>

@@ -17,4 +17,8 @@
     <None Include="wwwroot\img\pngtree-atmospheric-red-private-cinema-advertising-background-image_940890.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Payment\" />
+  </ItemGroup>
+
 </Project>
