@@ -3,6 +3,7 @@ using _11_DangThuyTrang_DataAccess.DTO;
 using _11_DangThuyTrang_Repositories.IRepository;
 using _11_DangThuyTrang_Repositories.Repository;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
 {
@@ -18,9 +19,10 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
             var products = repository.GetMovies(keyword);
             return products;
         }
-		[HttpGet("GetAllGenre")]
-		public ActionResult<IEnumerable<Genre>> GetGenres() => repository.GetGenres();
-		[HttpPost("AddMovie")]
+        [HttpGet("GetAllGenre")]
+        public ActionResult<IEnumerable<Genre>> GetGenres() => repository.GetGenres();
+
+        [HttpPost("AddMovie")]
         public IActionResult AddMovie(MovieRequestDTO p)
         {
             repository.SaveMovie(p);
@@ -49,6 +51,31 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
             }
             repository.UpdateMovie(p);
             return NoContent();
+        }
+
+        [HttpGet("GetAllMovies")]
+        public ActionResult<IEnumerable<Movie>> GetAllMovies(string? keyword, int? genreId)
+        {
+            var movies = repository.GetAllMovies(keyword, genreId);
+            return Ok(movies);
+        }
+
+        [HttpGet("{movieId}")]
+        public IActionResult GetMovieDetail(int movieId)
+        {
+            try
+            {
+                var movieDetail = repository.GetMovieDetail(movieId);
+                if (movieDetail == null)
+                {
+                    return NotFound();
+                }
+                return Ok(movieDetail);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }
