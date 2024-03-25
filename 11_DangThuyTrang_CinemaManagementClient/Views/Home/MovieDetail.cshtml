@@ -1,0 +1,88 @@
+﻿@model _11_DangThuyTrang_BussinessObjects.DTO.MovieDetailDTO
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1 style="text-align:center">Detail</h1>
+
+<div class="film-detail">
+    <div class="film-image">
+        <img src="@Model.Image" alt="@Model.Title" />
+    </div>
+    <div class="film-info">
+        <h2>Nội Dung Phim</h2>
+        <br />
+        <h3>@Model.Title</h3>
+        <p>Đạo diễn: @Model.Director</p>
+        <p>Diễn viên: @Model.Actors</p>
+        <p>Thể loại: @Model.Genre</p>
+        <p>Ngày công chiếu: @Model.PurchaseTime.ToString("dd/MM/yyyy")</p>
+        <p>Thời lượng: @Model.Length phút</p>
+        <p>Ngôn ngữ: @Model.Language</p>
+        <p>Phân loại: @Model.Rated</p>
+        <button class="btn btn-primary" id="bookTicketBtn">Đặt Vé</button>
+    </div>
+</div>
+
+<script>
+    function formatDate(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear().toString().slice(2);
+
+        // Đảm bảo các số nhỏ hơn 10 được thêm số 0 phía trước
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+
+        return day + "/" + month + "/" + year;
+    }
+
+    document.getElementById("bookTicketBtn").addEventListener("click", function () {
+        // Lấy ngày hiện tại
+        var currentDate = formatDate(new Date());
+        // Chuyển hướng đến trang Index của ShowTimeController và truyền tham số ngày hiện tại
+        window.location.href = "/ShowTime/Index?date=" + currentDate;
+    });
+</script>
+
+<style>
+    .film-detail {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .film-image {
+        flex: 0 0 auto;
+        margin-right: 20px;
+    }
+
+        .film-image img {
+            width: 103.429px;
+            height: 103.429px;
+            object-fit: cover;
+        }
+
+    .film-info {
+        flex: 1 1 auto;
+    }
+
+        .film-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .film-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .film-info p {
+            margin-bottom: 5px;
+        }
+</style>
