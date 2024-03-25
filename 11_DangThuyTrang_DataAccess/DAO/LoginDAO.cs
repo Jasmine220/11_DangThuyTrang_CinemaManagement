@@ -1,4 +1,5 @@
 ﻿using _11_DangThuyTrang_BussinessObjects.Models;
+using _11_DangThuyTrang_DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 {
     public class LoginDAO
     {
-        public static (bool IsLoggedIn, int RoleId) Login(string username, string password)
+        public static (bool IsLoggedIn, int RoleId, int UserId) Login(LoginRequest l)
         {
             try
             {
@@ -19,7 +20,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                     var account = context.Accounts
                         .Include(a => a.IdNavigation.UserRoles)
                             .ThenInclude(ur => ur.Role)
-                        .FirstOrDefault(a => a.Username == username && a.Password == password);
+                        .FirstOrDefault(a => a.Username == l.Username && a.Password == l.Password);
 
                     if (account != null && account.IdNavigation != null)
                     {
@@ -27,7 +28,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                         var userRole = account.IdNavigation.UserRoles.FirstOrDefault();
                         if (userRole != null && userRole.Role != null)
                         {
-                            return (true, userRole.Role.Id);
+                            return (true, userRole.Role.Id, account.Id); // Trả về cả Id của người dùng
                         }
                     }
                 }
@@ -37,9 +38,7 @@ namespace _11_DangThuyTrang_DataAccess.DAO
                 throw new Exception(e.Message);
             }
 
-            // Trả về kết quả không thành công nếu không tìm thấy thông tin tài khoản hoặc vai trò
-            return (false, 0);
+            return (false, 0, 0);
         }
     }
 }
-

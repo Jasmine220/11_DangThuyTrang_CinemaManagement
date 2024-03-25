@@ -37,13 +37,13 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var loginResult = JsonSerializer.Deserialize<(bool IsLoggedIn, int Role)>(responseBody);
+                var loginResult = JsonSerializer.Deserialize<(bool IsLoggedIn, int RoleId)>(responseBody);
 
                 if (loginResult.IsLoggedIn)
                 {
                     // Thêm thông tin đăng nhập và vai trò vào HttpContext
                     HttpContext.Session.SetString("IsLoggedIn", "true");
-                    HttpContext.Session.SetString("UserRole", loginResult.Role.ToString());
+                    HttpContext.Session.SetString("UserRole", loginResult.RoleId.ToString());
 
                     return Redirect("/Home/Index");
                 }
