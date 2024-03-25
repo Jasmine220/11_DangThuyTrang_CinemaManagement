@@ -9,25 +9,27 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
-</style>
-<h1 style="text-align:center">Detail</h1>
 
+</style>
+<h2 style="text-align:center">Movie Details</h2>
+<h3>Nội Dung Phim</h3>
+<hr />
 <div class="film-detail">
+
     <div class="film-image">
         <img src="@Model.Image" alt="@Model.Title" />
     </div>
     <div class="film-info">
-        <h2>Nội Dung Phim</h2>
         <br />
         <h3>@Model.Title</h3>
-        <p>Đạo diễn: @Model.Director</p>
-        <p>Diễn viên: @Model.Actors</p>
-        <p>Thể loại: @Model.Genre</p>
-        <p>Ngày công chiếu: @Model.PurchaseTime.ToString("dd/MM/yyyy")</p>
-        <p>Thời lượng: @Model.Length phút</p>
-        <p>Ngôn ngữ: @Model.Language</p>
-        <p>Phân loại: @Model.Rated</p>
-        <button class="btn btn-primary" id="bookTicketBtn">Đặt Vé</button>
+        <p><span>Đạo diễn:</span> @Model.Director</p>
+        <p><span>Diễn viên:</span> @Model.Actors</p>
+        <p><span>Thể loại:</span> @Model.Genre</p>
+        <p><span>Ngày công chiếu:</span> @Model.PurchaseTime.ToString("dd/MM/yyyy")</p>
+        <p><span>Thời lượng:</span> @Model.Length phút</p>
+        <p><span>Ngôn ngữ:</span> @Model.Language</p>
+        <p><span>Phân loại:</span> @Model.Rated</p>
+        <button class="btn btn-danger" id="bookTicketBtn">Đặt Vé</button>
     </div>
 </div>
 
@@ -57,6 +59,12 @@
 </script>
 
 <style>
+    button{
+        margin-top: 10px;
+    }
+    span{
+       font-weight: bold
+    }
     .film-detail {
         display: flex;
         align-items: center;
@@ -66,16 +74,19 @@
     .film-image {
         flex: 0 0 auto;
         margin-right: 20px;
+        width: 20%;
     }
 
         .film-image img {
-            width: 103.429px;
-            height: 103.429px;
+            width: 100%;
+            height: auto;
             object-fit: cover;
         }
 
     .film-info {
         flex: 1 1 auto;
+        width: 75%;
+        margin-left: 5%;
     }
 
         .film-info h2 {

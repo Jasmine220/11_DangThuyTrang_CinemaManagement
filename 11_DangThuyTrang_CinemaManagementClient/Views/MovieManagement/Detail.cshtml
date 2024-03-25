@@ -8,7 +8,7 @@
         background-repeat: no-repeat;
     }
 </style>
-<h1>Movie details</h1>
+<h2>Movie details</h2>
 
 <div class="mb-2">
     <label class="form-label">Movie Id</label>
@@ -17,7 +17,8 @@
 <div class="mb-2">
     <label class="form-label">Title</label>
     <input type="text" class="form-control" value="@Model.Title" disabled />
-    <img src="@Model.Image" alt="@Model.Title" style="height : 25%; width: 25%"/>
+    <img src="@Model.Image" alt="@Model.Title" style="height: auto;
+    width: 20%;" />
 </div>
 <div class="mb-2">
     <label class="form-label">Description</label>

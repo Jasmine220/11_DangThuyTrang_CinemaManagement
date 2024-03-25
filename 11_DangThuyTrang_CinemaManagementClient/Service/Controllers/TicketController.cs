@@ -186,12 +186,6 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                         PropertyNameCaseInsensitive = true,
                     };
                     Ticket tickets = JsonSerializer.Deserialize<Ticket>(strData, options);
-
-
-                    
-
-
-
                     return View(tickets);
                 }
                 else

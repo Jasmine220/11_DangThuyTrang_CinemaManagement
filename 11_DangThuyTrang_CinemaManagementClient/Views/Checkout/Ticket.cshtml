@@ -18,12 +18,12 @@
     }
 </style>
 
-<h1 style="text-align: center; margin-bottom: 50px;">Nhập thông tin/Thanh Toán</h1>
+<h2 style="text-align: center; margin-bottom: 50px;">Nhập thông tin/Thanh Toán</h2>
 
 <div class="row">
     <div class="col-md-6">
         <div class="payment-method-container">
-            <h2>Phương thức thanh toán</h2>
+            <h3>Phương thức thanh toán</h3>
             <form>
                 <div class="form-group">
                     <label for="paymentMethod">Chọn phương thức thanh toán:</label>
@@ -37,7 +37,7 @@
 
     <div class="col-md-6">
         <div class="ticket-info-container">
-            <h2>Thông tin vé</h2>
+            <h3>Thông tin vé</h3>
             <hr/>
             <div class="ticket-info">
                 <div class="ticket-details">
@@ -46,7 +46,7 @@
                         var groupTicket = ticketGroup.First();
                         <div style="overflow: hidden;">
                             <div style="float: left; margin-right: 10px;">
-                                <h4>@groupTicket.Showtime.Movie.Title</h4>
+                                <h5>@groupTicket.Showtime.Movie.Title</h5>
                                 <img src="@groupTicket.Showtime.Movie.Image" alt="@groupTicket.Showtime.Movie.Title" style="max-width: 100px; max-height: 150px;">
                             </div>
                             <div>
@@ -82,7 +82,7 @@
                 // Tính tổng tiền của các vé
                 double totalPrice = Model.Sum(ticket => ticket.TotalPrice ?? 0);
             }
-            <h4>Tổng tiền: @totalPrice.ToString("N0") VNĐ</h4>
+            <h5>Tổng tiền: @totalPrice.ToString("N0") VNĐ</h5>
             <button class="btn btn-primary" onclick="payment(@totalPrice)">Thanh toán</button>
         </div>
     </div>

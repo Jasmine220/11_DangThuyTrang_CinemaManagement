@@ -4,21 +4,20 @@
     ViewData["Title"] = "ShowTime Page";
 }
 
-<h1>ShowTime Page</h1>
+<h2 style="text-align:center;">ShowTimes</h2>
 
 <div class="date-selection">
-    <button id="prevBtn">Previous</button>
+    <button id="prevBtn" class="btn btn-outline-danger">Previous</button>
     <div id="dateContainer"></div>
-    <button id="nextBtn">Next</button>
+    <button id="nextBtn" class="btn btn-outline-primary">Next</button>
 </div>
 
-<h2>ShowTimes</h2>
 <table class="table">
     <thead>
         <tr>
-            <th>Movie</th>
-            <th>Showroom</th>
-            <th>Start Time</th>
+            <th style="width: 30%">Movie</th>
+            <th style="width: 20%">Showroom</th>
+            <th style="width: 50%">Start Time</th>
         </tr>
     </thead>
     <tbody id="showTimesBody">
@@ -26,12 +25,15 @@
 </table>
 
 <style>
+
     body {
         background-image: url('/img/pngtree-background-white-gray-gradient-business-vector-picture-image_1996067.jpg');
         background-size: cover;
         background-repeat: no-repeat;
     }
-
+    .h2 {
+        text-align:center;
+    }
     .date-selection {
         display: flex;
         justify-content: space-between;

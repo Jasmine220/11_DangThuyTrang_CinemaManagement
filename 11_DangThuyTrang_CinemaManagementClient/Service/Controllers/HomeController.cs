@@ -66,6 +66,13 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 {
                     return RedirectToAction("Index", "Login");
                 }
+                ViewBag.Role = 1;
+
+                if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "1")
+                {
+                    ViewBag.Role = 2;
+
+                }
 
                 return View(paginatedMovies);
             }

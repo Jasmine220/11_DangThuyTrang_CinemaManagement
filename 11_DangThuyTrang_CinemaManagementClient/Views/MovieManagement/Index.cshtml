@@ -14,13 +14,15 @@
             background-size: cover;
             background-repeat: no-repeat;
         }
-        h1 {
+        h2 {
             text-align: center;
+            margin-top: 30px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 30px;
         }
 
         th, td {
@@ -29,18 +31,25 @@
             border-bottom: 1px solid #ddd;
         }
 
+        .column-info{
+            width: 15%;
+        }
+
+
+
         tr:hover {
             background-color: #f5f5f5;
         }
 
         .button-container {
-            text-align: center;
-            margin-bottom: 20px;
+            text-align: left;
+            margin-top: 30px;
+            display: flex;
+            place-items: stretch
         }
 
         .search-container {
-            text-align: right;
-            margin-bottom: 20px;
+            margin-left: 20px;
         }
 
         input[type=text] {
@@ -51,7 +60,7 @@
         }
 
         button[type=submit] {
-            background-color: #4CAF50;
+            background-color: #198754;
             color: white;
             padding: 6px 10px;
             border: none;
@@ -98,32 +107,38 @@
                 color: #fff;
             }
 
+
+
     </style>
 </head>
 <body>
-    <h1>Movie List</h1>
-    <div class="button-container">
-        <a href="@Url.Action("Create")">Create New</a>
+    <h2>Movies</h2>
+    <div class="button-container" >
+        <a href="@Url.Action("Create")" class="btn btn-success">Create New</a>
+        <div class="search-container">
+            <form method="get" action="@Url.Action("Index")">
+                <label for="keyword">Title </label>
+                <input type="text" name="keyword" value="@ViewBag.Keyword"/>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+           
     </div>
-    <div class="search-container">
-        <form method="get" action="@Url.Action("Index")">
-            <label for="keyword">Title: </label>
-            <input type="text" name="keyword" value="@ViewBag.Keyword" />
-            <button type="submit">Search</button>
-        </form>
-    </div>
+    
 
     @if (Model.Any())
     {
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Director</th>
-                    <th>Language</th>
-                    <th>Price Ticket</th>
-                    <th>Genre</th>
+                    <th class="column-info">ID</th>
+                    <th class="column-info">Title</th>
+                    <th class ="column-info">Director</th>
+                    <th class="column-info">Language</th>
+                    <th class="column-info">Price Ticket</th>
+                    <th class="column-info">Genre</th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -131,15 +146,19 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Director)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Language)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PriceTicket)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Genre.Name)</td>
+                        <td class ="column-info">@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td class="column-info">@Html.DisplayFor(modelItem => item.Title)</td>
+                        <td class="column-info">@Html.DisplayFor(modelItem => item.Director)</td>
+                        <td class="column-info">@Html.DisplayFor(modelItem => item.Language)</td>
+                        <td class="column-info">@Html.DisplayFor(modelItem => item.PriceTicket)</td>
+                        <td class="column-info">@Html.DisplayFor(modelItem => item.Genre.Name)</td>
                         <td class="action-buttons">
                             <button class="btn btn-success" onclick="window.location.href='@Url.Action("Detail", new { id = item.Id })'">Detail</button>
+                        </td>
+                        <td class="action-buttons">
                             <button class="btn btn-warning" onclick="window.location.href='@Url.Action("Edit", new { id = item.Id })'">Edit</button>
+                        </td>
+                        <td class="action-buttons">
                             <button class="btn btn-danger" onclick="window.location.href='@Url.Action("Delete", new { id = item.Id })'">Delete</button>
                         </td>
                     </tr>
