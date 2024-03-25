@@ -4,6 +4,13 @@
 @{
     var genreList = ViewData["GenreList"] as List<Genre>;
 }
+<style>
+    body {
+        background-image: url('/img/pngtree-background-white-gray-gradient-business-vector-picture-image_1996067.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
 <form asp-controller="Movie" asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" value="@Model.Id" />
     <div class="mb-3">

@@ -137,10 +137,12 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
             // Chuyển hướng người dùng đến trang checkout với dữ liệu trên
             return Redirect(redirectUrl);
         }
-        public async Task<IActionResult> HistoryTicket(int userId)
+        public async Task<IActionResult> HistoryTicket(int? userId)
         {
             try
             {
+                var customerId = HttpContext.Session.GetInt32("UserId");
+                userId = customerId;
                 HttpResponseMessage response = await client.GetAsync($"{TicketApiUrl}/user/{userId}");
 
                 if (response.IsSuccessStatusCode)
@@ -151,7 +153,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Service.Controllers
                         PropertyNameCaseInsensitive = true,
                     };
                     List<Ticket> tickets = JsonSerializer.Deserialize<List<Ticket>>(strData, options);
-
+                    if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "2")
+                    {
+                        return RedirectToAction("Index", "Login");
+                    }
                     return View(tickets);
                 }
                 else

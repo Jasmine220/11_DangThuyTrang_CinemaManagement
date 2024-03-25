@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using System.Text.Json;
 using _11_DangThuyTrang_BussinessObjects.DTO;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 {
@@ -23,8 +24,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> IndexAsync(int? page)
         {
+            int pageSize = 8;
+            int pageNumber = page ?? 1;
             string apiUrlUser = $"{_userApiUrl}/GetAllUsers";
 
 
@@ -42,13 +45,13 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 };
                 List<User> listUser = JsonSerializer.Deserialize<List<User>>(strDataUser, options);
 
-                
+                ViewBag.TotalPages = (int)Math.Ceiling((double)listUser.Count() / pageSize);
+                listUser = listUser.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-                if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+                if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "1")
                 {
                     return RedirectToAction("Index", "Login");
                 }
-
                 return View(listUser);
             }
         }

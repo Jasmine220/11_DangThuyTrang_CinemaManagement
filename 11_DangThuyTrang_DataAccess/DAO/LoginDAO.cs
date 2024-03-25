@@ -2,10 +2,7 @@
 using _11_DangThuyTrang_DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _11_DangThuyTrang_DataAccess.DAO
 {
@@ -24,11 +21,15 @@ namespace _11_DangThuyTrang_DataAccess.DAO
 
                     if (account != null && account.IdNavigation != null)
                     {
-                        // Lấy quyền của người dùng từ đối tượng User liên quan
-                        var userRole = account.IdNavigation.UserRoles.FirstOrDefault();
-                        if (userRole != null && userRole.Role != null)
+                        // Kiểm tra trạng thái của người dùng
+                        if (account.IdNavigation.Status == true) // Giả sử trường lưu trạng thái là Status
                         {
-                            return (true, userRole.Role.Id, account.Id); // Trả về cả Id của người dùng
+                            // Lấy quyền của người dùng từ đối tượng User liên quan
+                            var userRole = account.IdNavigation.UserRoles.FirstOrDefault();
+                            if (userRole != null && userRole.Role != null)
+                            {
+                                return (true, userRole.Role.Id, account.Id); // Trả về cả Id của người dùng
+                            }
                         }
                     }
                 }
