@@ -3,13 +3,20 @@
 @{
     ViewData["Title"] = "Sign Up";
 }
+<style>
+    body {
+        background-image: url('/img/pngtree-background-white-gray-gradient-business-vector-picture-image_1996067.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
 
 <h1>@ViewData["Title"]</h1>
 <head>
     <link rel="stylesheet" href="~/css/signup.css">
-
 </head>
-<form asp-action="SignUp" method="post">
+
+<form id="signupForm" asp-action="SignUp" method="post">
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" id="username" name="username" required>
@@ -32,3 +39,26 @@
     </div>
     <button type="submit" class="btn btn-primary">Sign Up</button>
 </form>
+
+<script>
+   
+        function showAlert(message) {
+            alert(message);
+        }
+
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            showAlert(successMessage);
+        }
+
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            showAlert(errorMessage);
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+
+            // Gọi hàm showAlert() để hiển thị thông báo khi submit form thành công
+            showAlert('Form submitted successfully!');
+        });
+</script>

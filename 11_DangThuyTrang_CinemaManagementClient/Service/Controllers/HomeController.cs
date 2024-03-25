@@ -24,8 +24,11 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> IndexAsync(string? keyword, int? genreId)
+        public async Task<IActionResult> IndexAsync(string? keyword, int? genreId, int? page)
         {
+            // Số lượng bản ghi trên mỗi trang
+            int pageSize = 8;
+
             string apiUrlMovies = $"{_movieApiUrl}/GetAllMovies?keyword={keyword}&genreId={genreId}";
             string apiUrlGenres = $"{_movieApiUrl}/GetAllGenre";
 
@@ -43,6 +46,12 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                 };
                 List<Movie> listMovies = JsonSerializer.Deserialize<List<Movie>>(strDataMovies, options);
 
+                // Phân trang
+                var pageNumber = page ?? 1;
+                var paginatedMovies = listMovies.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+                ViewBag.PageNumber = pageNumber;
+                ViewBag.TotalPages = Math.Ceiling((double)listMovies.Count / pageSize);
+
                 HttpResponseMessage responseGenres = await client.GetAsync(apiUrlGenres);
                 if (!responseGenres.IsSuccessStatusCode)
                 {
@@ -58,9 +67,10 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                     return RedirectToAction("Index", "Login");
                 }
 
-                return View(listMovies);
+                return View(paginatedMovies);
             }
         }
+
 
         public IActionResult Privacy()
         {

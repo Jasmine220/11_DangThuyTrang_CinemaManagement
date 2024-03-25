@@ -32,14 +32,18 @@ namespace _11_DangThuyTrang_CinemaManagementWebClient.Controllers
                 HttpResponseMessage response = await client.PostAsJsonAsync(MemberApiUrl, model);
                 response.EnsureSuccessStatusCode(); // Đảm bảo thành công
 
+                // Thiết lập TempData để hiển thị thông báo thành công
                 TempData["SuccessMessage"] = "Đăng ký thành công!";
-                return Redirect("/SignUp/Success");
+                // Trả về kết quả cho trình duyệt
+                return Redirect("/Login");
             }
             catch (Exception ex)
             {
+                // Thiết lập TempData để hiển thị thông báo lỗi
                 TempData["ErrorMessage"] = "Đăng ký không thành công: " + ex.Message;
-                return RedirectToAction("Index");
+                return Redirect("/SignUp");
             }
         }
+
     }
 }

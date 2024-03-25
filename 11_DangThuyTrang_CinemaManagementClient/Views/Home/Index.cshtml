@@ -2,7 +2,37 @@
 @{
     ViewData["Title"] = "Movies";
 }
+<style>
+    body {
+        background-image: url('/img/pngtree-background-white-gray-gradient-business-vector-picture-image_1996067.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
 
+    .pagination-container {
+        text-align: center;
+        margin-top: 20px; /* Điều chỉnh khoảng cách phía trên thanh phân trang */
+    }
+
+    .pagination {
+        display: inline-block;
+    }
+
+    .page-link {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #333;
+    }
+
+        .page-link.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+</style>
 <h1>Movies</h1>
 
 <div class="search-container">
@@ -44,7 +74,21 @@
         </div>
     }
 </div>
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="pagination-container">
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="pagination">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <a href="@Url.Action("Index", new { page = i })" class="page-link @(ViewBag.PageNumber == i ? "active" : "")">@i</a>
+                }
+            </div>
+        }
+    </div>
 
+}
 
 
 <style>

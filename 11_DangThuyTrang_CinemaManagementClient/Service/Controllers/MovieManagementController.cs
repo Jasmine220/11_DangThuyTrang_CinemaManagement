@@ -16,23 +16,34 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 			client.DefaultRequestHeaders.Accept.Add(contentType);
 			MovieApiUrl = "https://localhost:7230/api/Movie";
 		}
-		public async Task<IActionResult> Index(string? keyword)
-		{
-			HttpResponseMessage response = await client.GetAsync($"{MovieApiUrl}/GetAllMovie?keyword={keyword}");
-			string strData = await response.Content.ReadAsStringAsync();
-			var options = new JsonSerializerOptions
-			{
-				PropertyNameCaseInsensitive = true
-			};
-			List<Movie> listProducts = JsonSerializer.Deserialize<List<Movie>>(strData, options);
-			ViewBag.Keyword = keyword;
+        public async Task<IActionResult> Index(string? keyword, int? page)
+        {
+            int pageSize = 8;
+            int pageNumber = page ?? 1;
+
+            HttpResponseMessage response = await client.GetAsync($"{MovieApiUrl}/GetAllMovie?keyword={keyword}");
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            List<Movie> listProducts = JsonSerializer.Deserialize<List<Movie>>(strData, options);
+            ViewBag.TotalPages = (int)Math.Ceiling((double)listProducts.Count() / pageSize);
+
+            // Lấy số lượng phim trên trang hiện tại
+            listProducts = listProducts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.Keyword = keyword;
+
             if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "1")
             {
                 return RedirectToAction("Index", "Login");
             }
+
             return View(listProducts);
-		}
-		public async Task<IActionResult> Detail(int id)
+        }
+
+        public async Task<IActionResult> Detail(int id)
 		{
 			HttpResponseMessage response = await client.GetAsync(MovieApiUrl + "/Detail/" + id);
 
