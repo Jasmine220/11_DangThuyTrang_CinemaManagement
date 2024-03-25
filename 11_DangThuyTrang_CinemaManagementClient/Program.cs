@@ -7,7 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession(op =>
 {
     op.Cookie.Name = "IsLoggedIn";
-    op.IdleTimeout = TimeSpan.FromMinutes(30);
+    op.IdleTimeout = TimeSpan.FromMinutes(120);
     op.Cookie.IsEssential = true;
 });
 //Add session to save ticket
