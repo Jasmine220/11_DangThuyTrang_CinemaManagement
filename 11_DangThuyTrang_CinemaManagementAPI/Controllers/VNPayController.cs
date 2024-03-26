@@ -7,7 +7,7 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VNPayController : ControllerBase
+    public class VNPayController : Controller
     {
         private readonly IVNPayService _vnPayService;
 
@@ -28,7 +28,8 @@ namespace _11_DangThuyTrang_CinemaManagementAPI.Controllers
         public IActionResult PaymentCallback()
         {
             PaymentResponseModel response = (PaymentResponseModel)_vnPayService.PaymentExecute(Request.Query);
-            return Ok(response);
+            ViewBag.Response = response;
+            return View("/Views/Result.cshtml", response);
         }
         public static IActionResult Index()
         {

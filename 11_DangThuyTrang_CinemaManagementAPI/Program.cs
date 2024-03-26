@@ -1,3 +1,4 @@
+using _11_DangThuyTrang_BussinessObjects.Models;
 using _11_DangThuyTrang_CinemaManagementAPI.Service;
 using _11_DangThuyTrang_Repositories.IRepository;
 using _11_DangThuyTrang_Repositories.Repository;
@@ -22,7 +23,9 @@ builder.Services.AddCors(option =>
                 .AllowAnyMethod());
 });
 
+builder.Services.AddScoped<_11_DangThuyTrang_CinemaManagementContext>();
 builder.Services.AddScoped<IVNPayService, VNPayService>();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
