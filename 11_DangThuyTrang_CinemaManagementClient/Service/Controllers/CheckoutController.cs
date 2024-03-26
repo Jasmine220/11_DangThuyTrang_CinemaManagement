@@ -43,6 +43,7 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                     PropertyNameCaseInsensitive = true
                 };
                 List<int> ticketIds = JsonSerializer.Deserialize<List<int>>(strData, options);
+                HttpContext.Session.Set("TicketIds", JsonSerializer.SerializeToUtf8Bytes(ticketIds));
 
                 // Chuyển hướng đến trang Ticket và truyền danh sách ID của các vé được tạo
                 return RedirectToAction("Ticket", new { ids = ticketIds });
