@@ -62,18 +62,6 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
 
                 ViewBag.Genres = listGenres;
 
-                if (HttpContext.Session.GetString("IsLoggedIn") != "true")
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-                ViewBag.Role = 1;
-
-                if (HttpContext.Session.GetString("IsLoggedIn") != "true" || HttpContext.Session.GetString("UserRole") != "1")
-                {
-                    ViewBag.Role = 2;
-
-                }
-
                 return View(paginatedMovies);
             }
         }
@@ -103,10 +91,6 @@ namespace _11_DangThuyTrang_CinemaManagementClient.Controllers
                     PropertyNameCaseInsensitive = true
                 };
                 product = JsonSerializer.Deserialize<MovieDetailDTO>(strData, options);
-            }
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
-            {
-                return RedirectToAction("Index", "Login");
             }
             return View(product);
         }
